@@ -52,6 +52,7 @@ class MQServer implements MQServerInterface
                     }
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);
+                    fclose($connection);
                 }
                 fclose($connection);
             }
