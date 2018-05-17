@@ -37,24 +37,23 @@ class MQServer implements MQServerInterface
         $this->socket = stream_socket_server("tcp://{$address}:{$port}", $errno, $errstr);
         while ($this->running) {
 
-            $connection = stream_socket_accept($this->socket);
-            
-            try {
-                $data = unserialize(fread($connection, $this->bufferLength));
-                var_dump($data);
-                if($data['action'] == 'set') {
-                    $message = $data['message'];
-                    $this->bucket->store(new Message($message));
-                    
-                    fwrite($connection, self::ACK);
+            $connection = @stream_socket_accept($this->socket);
+            if ($connection) {
+                try {
+                    $data = unserialize(fread($connection, $this->bufferLength));
+                    if ($data['action'] == 'set') {
+                        $message = $data['message'];
+                        $this->bucket->store(new Message($message));
+
+                        fwrite($connection, self::ACK);
+                    } else {
+                        $number = $data['quantity'];
+                        fwrite($connection, serialize($this->bucket->get($number)));
+                    }
+                } catch (Exception $ex) {
+                    fwrite($connection, self::NACK);
                 }
-                else {
-                    $number = $data['quantity'];
-                    var_dump($this->bucket->get($number));
-                    fwrite($connection, serialize($this->bucket->get($number)));
-                }
-            } catch (Exception $ex) {
-                fwrite($connection, self::NACK);
+                fclose($connection);
             }
         }
     }
