@@ -1,0 +1,18 @@
+{
+    "name": "kdudas/php-mq",
+    "description": "Message Queue implementation for PHP",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dudás Krisztián",
+            "email": "dude920228@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "PhpMQ\\":"src/"
+        }
+    }
+    
+}
