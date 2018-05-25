@@ -6,7 +6,7 @@
 
 namespace PhpCache\Storage;
 
-use PhpCache\Message\PackageInterface;
+use PhpCache\Package\PackageInterface;
 
 /**
  * Description of MessageBucket
@@ -29,7 +29,7 @@ class PackageBucket implements StorageInterface
 
     public function store(PackageInterface $message)
     {
-        $this->packages[] = $message;
+        $this->packages[$message->getKey()] = $message->getContent();
     }
 
 }

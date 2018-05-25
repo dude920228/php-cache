@@ -6,8 +6,10 @@
 
 namespace PhpCache\CacheServer;
 
-use PhpCache\Message\Package;
-use PhpCache\Storage\MessageBucket;
+use Exception;
+use PhpCache\IO\CacheIOHandler;
+use PhpCache\Package\Package;
+use PhpCache\Storage\PackageBucket;
 
 /**
  * Description of CacheServer
@@ -18,44 +20,55 @@ class CacheServer implements CacheServerInterface
 {
 
     private $socket;
-    private $bucket;
     private $running;
-    private $bufferLength;
-
+    /**
+     *
+     * @var CacheIOHandler
+     */
+    private $ioHandler;
+    /**
+     *
+     * @var PackageBucket
+     */
+    private $bucket;
+    
     const ACK = 1;
     const NACK = 0;
 
-    public function __construct($bufferLength = 128)
+    public function __construct($ioHandler, $bucket)
     {
-        $this->bucket = new MessageBucket();
         $this->running = true;
-        $this->bufferLength = $bufferLength;
+        $this->ioHandler = $ioHandler;
+        $this->bucket = $bucket;
     }
 
-    public function run($address, $port)
+    public function run()
     {
-        $this->socket = stream_socket_server("tcp://{$address}:{$port}", $errno, $errstr);
+        $this->socket = $this->ioHandler->createServerSocket();
         while ($this->running) {
-
             $connection = @stream_socket_accept($this->socket);
             if ($connection) {
                 try {
-                    $data = fread($connection, $this->bufferLength);
+                    $dataString = $this->ioHandler->readFromSocket($connection);
+
+                    $data = unserialize($dataString);
+                    var_dump($data);
                     if ($data['action'] == 'set') {
                         $message = $data['message'];
-                        $this->bucket->store(new Package($message));
-
-                        fwrite($connection, self::ACK);
+                        
+                        $this->bucket->store(unserialize($message));
+                        fwrite($connection, serialize(self::ACK));
                     } else {
-                        $number = $data['quantity'];
-                        fwrite($connection, $this->bucket->get($number));
+                        $key = $data['key'];
+                        $package = new Package($key, $this->bucket->get($key));
+                        var_dump($package);
+                        fwrite($connection, serialize($package));
                     }
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);
-                    fclose($connection);
                 }
-                fclose($connection);
             }
+            fclose($connection);
         }
     }
 

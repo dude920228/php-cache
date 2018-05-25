@@ -6,7 +6,9 @@
 
 namespace PhpCache\CacheClient;
 
-use PhpCache\Message\Package;
+use PhpCache\IO\CacheIOHandler;
+use PhpCache\Package\Package;
+
 
 /**
  * Description of newPHPClass
@@ -15,54 +17,25 @@ use PhpCache\Message\Package;
  */
 class CacheClient implements ClientInterface
 {
-    private $serverAddress;
-    private $serverPort;
+    /**
+     *
+     * @var CacheIOHandler
+     */
+    private $ioHandler;
     
-    public function __construct($serverAddress, $serverPort)
+    public function __construct($ioHandler)
     {
-        $this->serverAddress = $serverAddress;
-        $this->serverPort = $serverPort;
+        $this->ioHandler = $ioHandler;
     }
     
     public function sendPackage(Package $package)
     {
-        $socket = fsockopen($this->serverAddress, $this->serverPort, $errno, $errstr, 2);
-        $data = ['action' => 'set', 'message' => $package]; 
-       fwrite($socket, serialize($data));
-        $response = $this->getResponse($socket);
-        if($response < 1) {
-            var_dump($response);
-        }
-        fclose($socket);
+        $this->ioHandler->push('set', $package);
     }
     
     public function getPackage($key)
     {
-        $socket = fsockopen($this->serverAddress, $this->serverPort, $errno, $errstr, 2);
-        $data = ['action' => 'get', 'key' => $key];
-        $recv = $this->readFromSocket($socket);
-        fclose($socket);
-        return igbinary_unserialize($recv);
-    }
-    
-    private function readFromSocket($socket)
-    {
-        $recv = "";
-        while(!feof($socket)) {
-            $recv .= fread($socket, 1024);
-        }
-        return $recv;
-    }
-    
-    private function writeToSocket($socket, $data)
-    {
-        fwrite($socket, igbinary_serialize($data));
-    }
-            
-    
-    private function getResponse($socket)
-    {
-        return $this->readFromSocket($socket);
+        return $this->ioHandler->fetch($key);
     }
 
 }

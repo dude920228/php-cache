@@ -12,5 +12,6 @@ namespace PhpCache\Package;
  */
 interface PackageInterface
 {
-    //put your code here
+    public function getKey();
+    public function getContent();
 }

@@ -1,7 +1,8 @@
 <?php
 namespace PhpCache\Storage;
 
-use PhpCache\Message\PackageInterface;
+use PhpCache\Package\PackageInterface;
+
 /*
  * All rights reserved © 2018 Legow Hosting Kft.
  */

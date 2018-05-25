@@ -6,7 +6,7 @@
 
 namespace PhpCache\CacheClient;
 
-use PhpCache\Message\Package;
+use PhpCache\Package\Package;
 
 /**
  *

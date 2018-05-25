@@ -23,6 +23,7 @@ class ServiceManager implements ContainerInterface
     
     public function __construct($config)
     {
+        $this->config = $config;
         $this->configure($config);
     }
     
@@ -31,11 +32,20 @@ class ServiceManager implements ContainerInterface
         if(isset($config['aliases'])) {
             $this->aliases = $config['aliases'];
         }
+        else {
+            $this->aliases = array();
+        }
         if(isset($config['factories'])) {
             $this->factories = $config['factories'];
         }
+        else {
+            $this->factories = array();
+        }
         if(isset($config['invokables'])) {
             $this->invokables = $config['invokables'];
+        }
+        else {
+            $this->invokables = array();
         }
     }
     
@@ -73,6 +83,11 @@ class ServiceManager implements ContainerInterface
     {
         return array_key_exists($this->aliases[$alias], $this->factories) ?
                 $this->factories[$this->aliases[$alias]] : $this->invokables[$this->aliases[$alias]];
+    }
+    
+    public function getConfig()
+    {
+        return $this->config;
     }
     
     public function has($id)

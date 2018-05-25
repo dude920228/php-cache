@@ -10,6 +10,6 @@ namespace PhpCache\CacheServer;
  */
 interface CacheServerInterface
 {
-    public function run($address, $port);
+    public function run();
     public function close();
 }

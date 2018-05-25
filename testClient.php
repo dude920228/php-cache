@@ -3,11 +3,13 @@ include_once('vendor/autoload.php');
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\Package\Package;
+use PhpCache\ServiceManager\ServiceManager;
 
-$client = new CacheClient('127.0.0.1', 9000);
+$config = require_once 'config.php';
+$serviceManager = new ServiceManager($config);
+$client = $serviceManager->get(CacheClient::class);
 for($i = 0; $i < 10; $i++) {
-    $content = (string)rand(0, 9999);
-    $client->sendPackage('', new Package($content));
-    echo $content."\n";
+    $content = (string)$i;
+    $client->sendPackage(new Package('test'.$i, $content));
 }
-var_dump($client->getPackage());
+var_dump($client->getPackage('test'.$i));
