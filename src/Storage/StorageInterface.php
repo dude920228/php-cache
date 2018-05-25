@@ -1,7 +1,7 @@
 <?php
-namespace PhpMQ\Storage;
+namespace PhpCache\Storage;
 
-use PhpMQ\Message\MessageInterface;
+use PhpCache\Message\PackageInterface;
 /*
  * All rights reserved © 2018 Legow Hosting Kft.
  */
@@ -12,6 +12,6 @@ use PhpMQ\Message\MessageInterface;
  */
 interface StorageInterface
 {
-    public function store(MessageInterface $message);
+    public function store(PackageInterface $message);
     public function get($key);
 }

@@ -1,6 +1,6 @@
 {
     "name": "kdudas/php-mq",
-    "description": "Message Queue implementation for PHP",
+    "description": "Simple cache implementation in php",
     "type": "library",
     "authors": [
         {
@@ -8,10 +8,12 @@
             "email": "dude920228@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "psr/container": "^1.0"
+    },
     "autoload": {
         "psr-4": {
-            "PhpMQ\\":"src/"
+            "PhpCache\\":"src/"
         }
     }
     

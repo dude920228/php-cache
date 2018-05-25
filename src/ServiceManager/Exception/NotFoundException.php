@@ -4,13 +4,14 @@
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpMQ\Message;
+namespace PhpMq\ServiceManager\Exception;
 
 /**
+ * Description of NotFoundException
  *
  * @author kdudas
  */
-interface MessageInterface
+class NotFoundException extends \Exception
 {
     //put your code here
 }

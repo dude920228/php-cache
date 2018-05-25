@@ -1,5 +1,5 @@
 <?php
-namespace PhpMQ\MQServer\Exception;
+namespace PhpCache\CacheServer\Exception;
 /*
  * All rights reserved © 2018 Legow Hosting Kft.
  */

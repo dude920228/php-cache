@@ -4,14 +4,13 @@
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpCache\Storage\Exception;
+namespace PhpCache\Package;
 
 /**
- * Description of newPHPClass
  *
  * @author kdudas
  */
-class StorageException extends \Exception
+interface PackageInterface
 {
     //put your code here
 }

@@ -4,17 +4,17 @@
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpMQ\MQServer;
+namespace PhpCache\CacheServer;
 
-use PhpMQ\Message\Message;
-use PhpMQ\Storage\MessageBucket;
+use PhpCache\Message\Package;
+use PhpCache\Storage\MessageBucket;
 
 /**
- * Description of MQServer
+ * Description of CacheServer
  *
  * @author kdudas
  */
-class MQServer implements MQServerInterface
+class CacheServer implements CacheServerInterface
 {
 
     private $socket;
@@ -40,15 +40,15 @@ class MQServer implements MQServerInterface
             $connection = @stream_socket_accept($this->socket);
             if ($connection) {
                 try {
-                    $data = unserialize(fread($connection, $this->bufferLength));
+                    $data = fread($connection, $this->bufferLength);
                     if ($data['action'] == 'set') {
                         $message = $data['message'];
-                        $this->bucket->store(new Message($message));
+                        $this->bucket->store(new Package($message));
 
                         fwrite($connection, self::ACK);
                     } else {
                         $number = $data['quantity'];
-                        fwrite($connection, serialize($this->bucket->get($number)));
+                        fwrite($connection, $this->bucket->get($number));
                     }
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);

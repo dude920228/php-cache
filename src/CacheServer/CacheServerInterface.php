@@ -1,5 +1,5 @@
 <?php
-namespace PhpMQ\MQServer;
+namespace PhpCache\CacheServer;
 /*
  * All rights reserved © 2018 Legow Hosting Kft.
  */
@@ -8,7 +8,7 @@ namespace PhpMQ\MQServer;
  *
  * @author kdudas
  */
-interface MQServerInterface
+interface CacheServerInterface
 {
     public function run($address, $port);
     public function close();
