@@ -69,12 +69,7 @@ class ServiceManager implements ContainerInterface
     {
         if(array_key_exists($id, $this->aliases)) {
             $serviceName = $this->getServiceForAlias($id);
-            if(array_key_exists($serviceName, $this->factories)) {
-                return 'factory';
-            }
-            else {
-                return 'invokable';
-            }
+            return $this->getServiceType($serviceName);
         }
         return array_key_exists($id, $this->factories) ? 'factory' : 'invokable';
     }

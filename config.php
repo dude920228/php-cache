@@ -14,7 +14,7 @@ use PhpCache\Storage\PackageBucket;
 
 return array(
     'memory_limit' => 1024,
-    'ip' => '127.0.0.1',
+    'ip' => '0.0.0.0',
     'port' => 9000,
     'bufferSize' => 512,
     'factories' => array(

@@ -49,26 +49,30 @@ class CacheServer implements CacheServerInterface
             $connection = @stream_socket_accept($this->socket);
             if ($connection) {
                 try {
-                    $dataString = $this->ioHandler->readFromSocket($connection);
-
+                    $dataString = "";
+                    while(!feof($connection)) {
+                        $dataString .= fread($connection, $this->ioHandler->getBufferLength());
+                    }
                     $data = unserialize($dataString);
                     var_dump($data);
                     if ($data['action'] == 'set') {
-                        $message = $data['message'];
-                        
-                        $this->bucket->store(unserialize($message));
-                        fwrite($connection, serialize(self::ACK));
+                        $package = $data['message'];
+                        var_dump($package);
+                        $this->bucket->store($package);
                     } else {
                         $key = $data['key'];
                         $package = new Package($key, $this->bucket->get($key));
-                        var_dump($package);
                         fwrite($connection, serialize($package));
+                        fflush($connection);
+                        fclose($connection);
                     }
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);
+                    fflush($connection);
+                    fclose($connection);
                 }
             }
-            fclose($connection);
+            
         }
     }
 

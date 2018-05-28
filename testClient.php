@@ -12,4 +12,5 @@ for($i = 0; $i < 10; $i++) {
     $content = (string)$i;
     $client->sendPackage(new Package('test'.$i, $content));
 }
-var_dump($client->getPackage('test'.$i));
+var_dump($client->getPackage('test9'));
+$client->close();

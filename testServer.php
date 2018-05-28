@@ -10,4 +10,4 @@ use PhpCache\ServiceManager\ServiceManager;
 $config = require_once 'config.php';
 $serviceManager = new ServiceManager($config);
 $server = $serviceManager->get(CacheServer::class);
-$server->run("127.0.0.1", "9000");
+$server->run();

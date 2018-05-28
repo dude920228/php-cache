@@ -1,5 +1,5 @@
 {
-    "name": "kdudas/php-mq",
+    "name": "kdudas/php-cache",
     "description": "Simple cache implementation in php",
     "type": "library",
     "authors": [
