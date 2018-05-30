@@ -1,0 +1,20 @@
+{
+    "name": "kdudas/php-cache",
+    "description": "Simple cache implementation in php",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dudás Krisztián",
+            "email": "dude920228@gmail.com"
+        }
+    ],
+    "require": {
+        "psr/container": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpCache\\":"src/"
+        }
+    }
+    
+}
