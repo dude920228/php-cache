@@ -13,7 +13,7 @@ use PhpCache\Package\PackageInterface;
  *
  * @author kdudas
  */
-class PackageBucket implements StorageInterface
+class Bucket implements StorageInterface
 {
     private $packages;
     
@@ -27,9 +27,15 @@ class PackageBucket implements StorageInterface
         return $this->packages[$key];
     }
 
-    public function store(PackageInterface $message)
+    public function store($key, $message)
     {
-        $this->packages[$message->getKey()] = $message;
+        $this->packages[$key] = $message;
     }
-
+    
+    public function delete($key)
+    {
+        if(isset($this->packages[$key])) {
+            unset($this->packages[$key]);
+        }
+    }
 }

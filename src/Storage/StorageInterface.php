@@ -9,6 +9,6 @@ use PhpCache\Package\PackageInterface;
  */
 interface StorageInterface
 {
-    public function store(PackageInterface $message);
+    public function store($key, $message);
     public function get($key);
 }

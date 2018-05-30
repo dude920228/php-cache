@@ -2,11 +2,12 @@
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\CacheClient\CacheClientFactory;
+use PhpCache\CacheServer\ActionHandler;
 use PhpCache\CacheServer\CacheServer;
 use PhpCache\CacheServer\CacheServerFactory;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\IO\CacheIOHandlerFactory;
-use PhpCache\Storage\PackageBucket;
+use PhpCache\Storage\Bucket;
 
 return array(
     'memory_limit' => 1024,
@@ -19,6 +20,7 @@ return array(
         CacheClient::class => CacheClientFactory::class
     ),
     'invokables' => array(
-        PackageBucket::class => PackageBucket::class
+        Bucket::class => Bucket::class,
+        ActionHandler::class => ActionHandler::class
     )
 );

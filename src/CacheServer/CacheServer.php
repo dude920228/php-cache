@@ -5,7 +5,7 @@ namespace PhpCache\CacheServer;
 use Exception;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\Package\Package;
-use PhpCache\Storage\PackageBucket;
+use PhpCache\Storage\Bucket;
 
 /**
  * Description of CacheServer
@@ -26,18 +26,24 @@ class CacheServer implements CacheServerInterface
 
     /**
      *
-     * @var PackageBucket
+     * @var Bucket
      */
     private $bucket;
-
+    /**
+     *
+     * @var ActionHandler
+     */
+    private $actionHandler;
+    
     const ACK = 1;
     const NACK = 0;
 
-    public function __construct($ioHandler, $bucket)
+    public function __construct($ioHandler, $bucket, $actionHandler)
     {
         $this->running = true;
         $this->ioHandler = $ioHandler;
         $this->bucket = $bucket;
+        $this->actionHandler = $actionHandler;
     }
 
     public function run()
@@ -49,17 +55,8 @@ class CacheServer implements CacheServerInterface
                 try {
                     $dataString = $this->ioHandler->readFromSocket($connection);
                     $data = unserialize($dataString);
-                    if ($data['action'] == 'set') {
-                        $package = $data['message'];
-                        $this->bucket->store($package);
-                        $this->ioHandler->closeSocket($connection);
-                    } else {
-                        $key = $data['key'];
-                        $package = $this->bucket->get($key);
-                        $dataToSend = serialize($package);
-                        $this->ioHandler->writeToSocket($connection, $dataToSend);
-                        $this->ioHandler->closeSocket($connection);
-                    }
+                    ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection);
+                    
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);
                     fflush($connection);

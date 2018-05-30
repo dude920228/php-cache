@@ -10,6 +10,6 @@ use PhpCache\Package\Package;
  */
 interface ClientInterface
 {
-    public function sendPackage(Package $message);
-    public function getPackage($key);
+    public function set($key, $message);
+    public function get($key);
 }

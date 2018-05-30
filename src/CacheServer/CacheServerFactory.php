@@ -3,7 +3,7 @@
 namespace PhpCache\CacheServer;
 
 use PhpCache\IO\CacheIOHandler;
-use PhpCache\Storage\PackageBucket;
+use PhpCache\Storage\Bucket;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -16,7 +16,8 @@ class CacheServerFactory
     public function __invoke(ContainerInterface $container)
     {
         $ioHandler = $container->get(CacheIOHandler::class);
-        $bucket = $container->get(PackageBucket::class);
-        return new CacheServer($ioHandler, $bucket);
+        $bucket = $container->get(Bucket::class);
+        $actionHandler = $container->get(ActionHandler::class);
+        return new CacheServer($ioHandler, $bucket, $actionHandler);
     }
 }
