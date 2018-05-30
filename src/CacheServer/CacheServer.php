@@ -1,9 +1,5 @@
 <?php
 
-/*
- * All rights reserved © 2018 Legow Hosting Kft.
- */
-
 namespace PhpCache\CacheServer;
 
 use Exception;
@@ -21,17 +17,19 @@ class CacheServer implements CacheServerInterface
 
     private $socket;
     private $running;
+
     /**
      *
      * @var CacheIOHandler
      */
     private $ioHandler;
+
     /**
      *
      * @var PackageBucket
      */
     private $bucket;
-    
+
     const ACK = 1;
     const NACK = 0;
 
@@ -45,26 +43,22 @@ class CacheServer implements CacheServerInterface
     public function run()
     {
         $this->socket = $this->ioHandler->createServerSocket();
-        while ($this->running) {
-            $connection = @stream_socket_accept($this->socket);
-            if ($connection) {
+        while (true) {
+            while ($connection = @socket_accept($this->socket)) {
+                socket_set_nonblock($connection);
                 try {
-                    $dataString = "";
-                    while(!feof($connection)) {
-                        $dataString .= fread($connection, $this->ioHandler->getBufferLength());
-                    }
+                    $dataString = $this->ioHandler->readFromSocket($connection);
                     $data = unserialize($dataString);
-                    var_dump($data);
                     if ($data['action'] == 'set') {
                         $package = $data['message'];
-                        var_dump($package);
                         $this->bucket->store($package);
+                        $this->ioHandler->closeSocket($connection);
                     } else {
                         $key = $data['key'];
-                        $package = new Package($key, $this->bucket->get($key));
-                        fwrite($connection, serialize($package));
-                        fflush($connection);
-                        fclose($connection);
+                        $package = $this->bucket->get($key);
+                        $dataToSend = serialize($package);
+                        $this->ioHandler->writeToSocket($connection, $dataToSend);
+                        $this->ioHandler->closeSocket($connection);
                     }
                 } catch (Exception $ex) {
                     fwrite($connection, self::NACK);
@@ -72,14 +66,11 @@ class CacheServer implements CacheServerInterface
                     fclose($connection);
                 }
             }
-            
         }
     }
-
+    
     public function close()
     {
-        $this->running = false;
-        socket_close($this->socket);
+        $this->ioHandler->closeSocket($this->socket);
     }
-
 }

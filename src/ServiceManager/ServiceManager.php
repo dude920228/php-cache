@@ -1,9 +1,5 @@
 <?php
 
-/*
- * All rights reserved © 2018 Legow Hosting Kft.
- */
-
 namespace PhpCache\ServiceManager;
 
 use PhpMq\ServiceManager\Exception\NotFoundException;

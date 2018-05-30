@@ -8,15 +8,11 @@ use PhpCache\IO\CacheIOHandler;
 use PhpCache\IO\CacheIOHandlerFactory;
 use PhpCache\Storage\PackageBucket;
 
-/*
- * All rights reserved © 2018 Legow Hosting Kft.
- */
-
 return array(
     'memory_limit' => 1024,
     'ip' => '0.0.0.0',
-    'port' => 9000,
-    'bufferSize' => 512,
+    'port' => 1234,
+    'bufferSize' => 8,
     'factories' => array(
         CacheServer::class => CacheServerFactory::class,
         CacheIOHandler::class => CacheIOHandlerFactory::class,

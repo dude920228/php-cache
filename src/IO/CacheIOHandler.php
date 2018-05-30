@@ -1,11 +1,8 @@
 <?php
+
 namespace PhpCache\IO;
 
 use PhpCache\IO\Exception\IOException;
-
-/*
- * All rights reserved © 2018 Legow Hosting Kft.
- */
 
 /**
  * Description of CacheIOHandler
@@ -14,70 +11,70 @@ use PhpCache\IO\Exception\IOException;
  */
 class CacheIOHandler
 {
+
     private $serverIp;
     private $serverPort;
     private $bufferLength;
-    
+
     public function __construct($serverIp, $serverPort, $bufferLength)
     {
         $this->serverIp = $serverIp;
         $this->serverPort = $serverPort;
         $this->bufferLength = $bufferLength;
     }
-    
-    public function push($package)
+
+    public function writeToSocket($socket, $dataString)
     {
-        $socket = stream_socket_client($this->serverIp.':'.$this->serverPort, $errno, $errstr, 2);
-        $data = ['action' => 'set', 'message' => $package]; 
-        stream_socket_sendto($socket, serialize($data));
-        $response = $this->readFromSocket($socket);
-        fclose($socket);
-        if($response < 1) {
-            return false;
+        $bytes = socket_write($socket, $dataString, strlen($dataString));
+        return $bytes;
+    }
+
+    public function createServerSocket()
+    {
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_bind($socket, $this->serverIp, $this->serverPort);
+        socket_listen($socket);
+        return $socket;
+    }
+
+    public function createClientSocket()
+    {
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        $connectionResult = socket_connect($socket,
+                $this->serverIp,
+                $this->serverPort);
+        return $socket;
+    }
+
+    public function readFromSocket($socket)
+    {
+        $recv = "";
+        $buffer = "";
+        while(socket_recv($socket, $buffer, $this->bufferLength, MSG_WAITALL)) {
+            $recv .= $buffer;
         }
-        return true;
+        
+        return $recv;
     }
     
-    public function fetch($key)
+    public function closeSocket($socket)
     {
-        $socket = stream_socket_client($this->serverIp.':'.$this->serverPort, $errno, $errstr, 2);
-        $data = ['action' => 'get', 'key' => $key];
-        stream_socket_sendto($socket, serialize($data));
-        $recv = stream_get_contents($socket, $this->bufferLength);
-        return unserialize($recv);
+        return socket_close($socket);
     }
     
     public function getServerIp()
     {
         return $this->serverIp;
     }
-    
+
     public function getServerPort()
     {
         return $this->serverPort;
     }
-    
+
     public function getBufferLength()
     {
         return $this->bufferLength;
     }
-    
-    public function createServerSocket()
-    {
-        return stream_socket_server("tcp://{$this->getServerIp()}:"
-        . "{$this->getServerPort()}", $errno, $errstr);
-    }
-    
-    public function readFromSocket($socket)
-    {
-        if(!is_resource($socket) || (get_resource_type($socket) != 'stream')) {
-            throw new IOException("The Socket provided is not a valid socket or stream resource!");
-        }
-        $recv = "";
-        while(!feof($socket)) {
-            $recv .= fread($socket, $this->bufferLength);
-        }
-        fclose($socket);
-        return $recv;
-    }
+
 }

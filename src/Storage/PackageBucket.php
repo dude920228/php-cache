@@ -29,7 +29,7 @@ class PackageBucket implements StorageInterface
 
     public function store(PackageInterface $message)
     {
-        $this->packages[$message->getKey()] = $message->getContent();
+        $this->packages[$message->getKey()] = $message;
     }
 
 }
