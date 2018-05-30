@@ -2,8 +2,6 @@
 
 namespace PhpCache\Storage;
 
-use PhpCache\Package\PackageInterface;
-
 /**
  * Description of MessageBucket
  *
