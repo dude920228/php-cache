@@ -15,8 +15,6 @@
         "psr-4": {
             "PhpCache\\":"src/"
         }
-    },
-    "require-dev": {
-        "phan/phan": "^0.12.11"
     }
+    
 }
