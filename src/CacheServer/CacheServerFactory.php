@@ -4,6 +4,7 @@ namespace PhpCache\CacheServer;
 
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\Storage\Bucket;
+use PhpCache\Storage\Maintainer;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -18,6 +19,7 @@ class CacheServerFactory
         $ioHandler = $container->get(CacheIOHandler::class);
         $bucket = $container->get(Bucket::class);
         $actionHandler = $container->get(ActionHandler::class);
-        return new CacheServer($ioHandler, $bucket, $actionHandler);
+        $maintainer = $container->get(Maintainer::class);
+        return new CacheServer($ioHandler, $bucket, $actionHandler, $maintainer);
     }
 }

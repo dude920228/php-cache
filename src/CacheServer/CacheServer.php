@@ -4,8 +4,8 @@ namespace PhpCache\CacheServer;
 
 use Exception;
 use PhpCache\IO\CacheIOHandler;
-use PhpCache\Package\Package;
 use PhpCache\Storage\Bucket;
+use PhpCache\Storage\Maintainer;
 
 /**
  * Description of CacheServer
@@ -34,33 +34,43 @@ class CacheServer implements CacheServerInterface
      * @var ActionHandler
      */
     private $actionHandler;
-    
+    /**
+     *
+     * @var Maintainer
+     */
+    private $maintainer;
     const ACK = 1;
     const NACK = 0;
 
-    public function __construct($ioHandler, $bucket, $actionHandler)
-    {
+    public function __construct(
+        $ioHandler,
+        $bucket,
+        $actionHandler,
+        $maintainer
+    ) {
         $this->running = true;
         $this->ioHandler = $ioHandler;
         $this->bucket = $bucket;
         $this->actionHandler = $actionHandler;
+        $this->maintainer = $maintainer;
     }
 
     public function run()
     {
         $this->socket = $this->ioHandler->createServerSocket();
         while (true) {
+            
             while ($connection = @socket_accept($this->socket)) {
                 socket_set_nonblock($connection);
+                $this->maintainer->maintainBucket($this->bucket);
                 try {
                     $dataString = $this->ioHandler->readFromSocket($connection);
                     $data = unserialize($dataString);
                     ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection);
                     
                 } catch (Exception $ex) {
-                    fwrite($connection, self::NACK);
-                    fflush($connection);
-                    fclose($connection);
+                    $this->ioHandler->writeToSocket($connection, self::NACK);
+                    $this->ioHandler->closeSocket($connection);
                 }
             }
         }

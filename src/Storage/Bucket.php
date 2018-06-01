@@ -2,8 +2,6 @@
 
 namespace PhpCache\Storage;
 
-use PhpCache\Package\PackageInterface;
-
 /**
  * Description of MessageBucket
  *
@@ -11,27 +9,33 @@ use PhpCache\Package\PackageInterface;
  */
 class Bucket implements StorageInterface
 {
-    private $packages;
+    private $entries;
     
     public function __construct()
     {
-        $this->packages = array();
+        $this->entries = array();
     }
     
     public function get($key)
     {
-        return $this->packages[$key];
+        return $this->entries[$key]['content'];
     }
 
     public function store($key, $message)
     {
-        $this->packages[$key] = $message;
+        $this->entries[$key]['content'] = $message;
+        $this->entries[$key]['created_time'] = time();
+    }
+    
+    public function getEntries()
+    {
+        return $this->entries;
     }
     
     public function delete($key)
     {
-        if(isset($this->packages[$key])) {
-            unset($this->packages[$key]);
+        if(array_key_exists($key, $this->entries)) {
+            unset($this->entries[$key]);
         }
     }
 }
