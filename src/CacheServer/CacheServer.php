@@ -58,7 +58,7 @@ class CacheServer implements CacheServerInterface
     public function run()
     {
         $this->socket = $this->ioHandler->createServerSocket();
-        while (true) {
+        while ($this->running) {
             
             while ($connection = @socket_accept($this->socket)) {
                 socket_set_nonblock($connection);
@@ -78,6 +78,7 @@ class CacheServer implements CacheServerInterface
     
     public function close()
     {
+        $this->running = false;
         $this->ioHandler->closeSocket($this->socket);
     }
 }

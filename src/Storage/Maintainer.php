@@ -14,10 +14,12 @@ namespace PhpCache\Storage;
 class Maintainer
 {
     private $ttl;
+    private $lastBackupRun;
     
     public function __construct($ttl)
     {
         $this->ttl = $ttl;
+        $this->lastBackupRun = null;
     }
     
     public function maintainBucket(Bucket $bucket)
@@ -31,5 +33,10 @@ class Maintainer
                 $bucket->delete($key);
             }
         }
+    }
+    
+    public function backup()
+    {
+        
     }
 }
