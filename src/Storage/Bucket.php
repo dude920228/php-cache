@@ -18,6 +18,9 @@ class Bucket implements StorageInterface
     
     public function get($key)
     {
+        if(!array_key_exists($key, $this->entries)) {
+            return null;
+        }
         return $this->entries[$key]['content'];
     }
 
