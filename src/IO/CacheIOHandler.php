@@ -7,7 +7,7 @@ use PhpCache\IO\Exception\IOException;
 /**
  * Description of CacheIOHandler
  *
- * @author kdudas
+ * @author dude920228
  */
 class CacheIOHandler
 {
@@ -32,7 +32,15 @@ class CacheIOHandler
     public function createServerSocket()
     {
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_bind($socket, $this->serverIp, $this->serverPort);
+        $bindResult = socket_bind($socket, $this->serverIp, $this->serverPort);
+        if(! $bindResult) {
+            throw new IOException(
+                sprintf("Couldn't create server socket on ip: %s, port: %d",
+                    $this->serverIp,
+                    $this->serverPort
+                )
+            );
+        }
         socket_listen($socket);
         return $socket;
     }
@@ -43,6 +51,14 @@ class CacheIOHandler
         $connectionResult = socket_connect($socket,
                 $this->serverIp,
                 $this->serverPort);
+        if(! $connectionResult) {
+            throw new IOException(
+                sprintf("Couldn't connect to server socket on ip: %s, port: %d",
+                    $this->serverIp,
+                    $this->serverPort
+                )
+            );
+        }
         return $socket;
     }
 

@@ -3,7 +3,7 @@ namespace PhpCache\Storage;
 
 /**
  *
- * @author kdudas
+ * @author dude920228
  */
 interface StorageInterface
 {

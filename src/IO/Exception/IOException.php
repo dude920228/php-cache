@@ -5,7 +5,7 @@ namespace PhpCache\IO\Exception;
 /**
  * Description of IOException
  *
- * @author kdudas
+ * @author dude920228
  */
 class IOException extends \Exception
 {

@@ -5,7 +5,7 @@ namespace PhpCache\Storage;
 /**
  * Description of MessageBucket
  *
- * @author kdudas
+ * @author dude920228
  */
 class Bucket implements StorageInterface
 {
@@ -24,9 +24,9 @@ class Bucket implements StorageInterface
         return gzuncompress($this->entries[$key]['content']);
     }
 
-    public function store($key, $message)
+    public function store($key, $entry)
     {
-        $this->entries[$key]['content'] = gzcompress($message, 9);
+        $this->entries[$key]['content'] = gzcompress($entry, 9);
         $this->entries[$key]['created_time'] = time();
     }
     

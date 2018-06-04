@@ -7,7 +7,7 @@ use Exception;
 /**
  * Description of newPHPClass
  *
- * @author kdudas
+ * @author dude920228
  */
 class InvalidConfigException extends Exception
 {

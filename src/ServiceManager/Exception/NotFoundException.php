@@ -5,7 +5,7 @@ namespace PhpMq\ServiceManager\Exception;
 /**
  * Description of NotFoundException
  *
- * @author kdudas
+ * @author dude920228
  */
 class NotFoundException extends \Exception
 {

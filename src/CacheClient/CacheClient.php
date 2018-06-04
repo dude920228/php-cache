@@ -9,7 +9,7 @@ use PhpCache\Package\Package;
 /**
  * Description of newPHPClass
  *
- * @author kdudas
+ * @author dude920228
  */
 class CacheClient implements ClientInterface
 {

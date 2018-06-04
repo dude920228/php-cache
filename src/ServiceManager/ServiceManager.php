@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Description of ServiceManager
  *
- * @author kdudas
+ * @author dude920228
  */
 class ServiceManager implements ContainerInterface
 {

@@ -3,7 +3,7 @@ namespace PhpCache\CacheServer;
 
 /**
  *
- * @author kdudas
+ * @author dude920228
  */
 interface CacheServerInterface
 {

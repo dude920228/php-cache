@@ -6,7 +6,7 @@ use PhpCache\Package\Package;
 
 /**
  *
- * @author kdudas
+ * @author dude920228
  */
 interface ClientInterface
 {

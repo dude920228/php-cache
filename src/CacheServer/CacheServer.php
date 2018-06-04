@@ -10,7 +10,7 @@ use PhpCache\Storage\Maintainer;
 /**
  * Description of CacheServer
  *
- * @author kdudas
+ * @author dude920228
  */
 class CacheServer implements CacheServerInterface
 {
@@ -63,6 +63,7 @@ class CacheServer implements CacheServerInterface
             while ($connection = @socket_accept($this->socket)) {
                 socket_set_nonblock($connection);
                 $this->maintainer->maintainBucket($this->bucket);
+                $this->maintainer->checkBackup(time(), $this->bucket);
                 try {
                     $dataString = $this->ioHandler->readFromSocket($connection);
                     $data = unserialize($dataString);
