@@ -12,8 +12,8 @@ composer install
 #### Supperted data types:
 - String
 - Integer/Float/Double
-- Array
-- Objects
+- Array (serialized)
+- Objects (serialized)
 #### Server side initiation:
 ```
 <?php
