@@ -21,12 +21,12 @@ class Bucket implements StorageInterface
         if(!array_key_exists($key, $this->entries)) {
             return null;
         }
-        return $this->entries[$key]['content'];
+        return gzuncompress($this->entries[$key]['content']);
     }
 
     public function store($key, $message)
     {
-        $this->entries[$key]['content'] = $message;
+        $this->entries[$key]['content'] = gzcompress($message, 9);
         $this->entries[$key]['created_time'] = time();
     }
     
