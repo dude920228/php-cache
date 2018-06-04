@@ -68,7 +68,6 @@ class CacheServer implements CacheServerInterface
                     $dataString = $this->ioHandler->readFromSocket($connection);
                     $data = unserialize($dataString);
                     ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection);
-                    
                 } catch (Exception $ex) {
                     $this->ioHandler->writeToSocket($connection, self::NACK);
                     $this->ioHandler->closeSocket($connection);

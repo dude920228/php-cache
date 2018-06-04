@@ -34,10 +34,13 @@ class CacheIOHandler
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         $bindResult = socket_bind($socket, $this->serverIp, $this->serverPort);
         if(! $bindResult) {
+            $errorCode = socket_last_error($socket);
+            $errorMsg = socket_strerror($errorCode);
             throw new IOException(
-                sprintf("Couldn't create server socket on ip: %s, port: %d",
+                sprintf("Couldn't create server socket on ip: %s, port: %d. Reason: %s",
                     $this->serverIp,
-                    $this->serverPort
+                    $this->serverPort,
+                    $errorMsg
                 )
             );
         }
@@ -48,14 +51,19 @@ class CacheIOHandler
     public function createClientSocket()
     {
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        $connectionResult = socket_connect($socket,
-                $this->serverIp,
-                $this->serverPort);
+        $connectionResult = socket_connect(
+            $socket,
+            $this->serverIp,
+            $this->serverPort
+        );
         if(! $connectionResult) {
+            $errorCode = socket_last_error($socket);
+            $errorMsg = socket_strerror($errorCode);
             throw new IOException(
-                sprintf("Couldn't connect to server socket on ip: %s, port: %d",
+                sprintf("Couldn't connect to server socket on ip: %s, port: %d. Reason: %s",
                     $this->serverIp,
-                    $this->serverPort
+                    $this->serverPort,
+                    $errorMsg
                 )
             );
         }

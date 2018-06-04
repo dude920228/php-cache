@@ -28,7 +28,7 @@ class CacheClient implements ClientInterface
     public function set($key, $package)
     {
         $socket = $this->ioHandler->createClientSocket();
-        $data = ['action' => 'set', 'key' => $key, 'message' => $package];
+        $data = array('action' => 'set', 'key' => $key, 'message' => $package);
         $dataString = serialize($data);
         $bytes = $this->ioHandler->writeToSocket($socket, $dataString);
         $this->ioHandler->closeSocket($socket);
@@ -36,7 +36,7 @@ class CacheClient implements ClientInterface
     
     public function get($key)
     {
-        $data = ['action' => 'get', 'key' => $key];
+        $data = array('action' => 'get', 'key' => $key);
         $socket = $this->ioHandler->createClientSocket();
         $dataString = serialize($data);
         $this->ioHandler->writeToSocket($socket, $dataString);
@@ -47,7 +47,7 @@ class CacheClient implements ClientInterface
     
     public function delete($key)
     {
-        $data = ['action' => 'delete', 'key' => $key];
+        $data = array('action' => 'delete', 'key' => $key);
         $socket = $this->ioHandler->createClientSocket();
         $dataString = serialize($data);
         $this->ioHandler->writeToSocket($socket, $dataString);
