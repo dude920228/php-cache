@@ -17,9 +17,34 @@ class CacheServerFactory
     public function __invoke(ContainerInterface $container)
     {
         $ioHandler = $container->get(CacheIOHandler::class);
+        /* @var $bucket Bucket */
         $bucket = $container->get(Bucket::class);
+        $config = $container->getConfig();
+        $backupDir = $config['backupDir'];
+        $restoredBucket = $this->restoreFromBackup($backupDir, $bucket);
         $actionHandler = $container->get(ActionHandler::class);
         $maintainer = $container->get(Maintainer::class);
-        return new CacheServer($ioHandler, $bucket, $actionHandler, $maintainer);
+        return new CacheServer($ioHandler, $restoredBucket, $actionHandler, $maintainer);
+    }
+    
+    private function restoreFromBackup($backupDir, $bucket)
+    {
+        foreach(new \DirectoryIterator($backupDir) as $file) {
+            if(! $file->isDot() && $file->isFile()) {
+                $keyParts = explode('.', $file->getFilename());
+                $key = $keyParts[0];
+                $handle = $file->openFile("r");
+                $contents = "";
+                while(! $handle->eof()) {
+                    $contents .= $handle->fread(128);
+                }
+                if($contents != "") {
+                    $uncompressed = gzuncompress($contents);
+                    $unserialized = unserialize($uncompressed);
+                    $bucket->store($key, $unserialized['content'], $unserialized['created_time']);
+                }
+            }
+        }
+        return $bucket;
     }
 }
