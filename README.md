@@ -31,6 +31,8 @@ $server->run();
 ```
 php testServer.php
 ```
+#### OR
+Read the guide in `daemon.sh` on how to run a php script as a service
 #### Client side initiation:
 ```
 <?php
