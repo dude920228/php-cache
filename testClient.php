@@ -17,5 +17,5 @@ for($i = 0; $i < 100; $i++) {
     $array[] = $foo;
     $array[] = $bar;
 }
-$client->set('test1', serialize($array));
+//$client->set('test1', serialize($array));
 var_dump($client->get('test1'));
