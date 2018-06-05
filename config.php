@@ -12,7 +12,7 @@ use PhpCache\Storage\Maintainer;
 use PhpCache\Storage\MaintainerFactory;
 
 return array(
-    'memory_limit' => 1024,
+    'memory_limit' => 1024, //To be used in future feature: Backing up data to file, after Bucket size exceeds memory limit
     'ip' => '0.0.0.0',
     'port' => 1234,
     'bufferSize' => 8,
