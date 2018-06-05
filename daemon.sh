@@ -18,7 +18,7 @@ PIDFILE="/var/run/${NAME}.pid"
 LOGFILE="/var/log/${NAME}.log"
 
 DAEMON="/usr/bin/php"
-DAEMON_OPTS="/var/www/PhpMq/testServer.php"
+DAEMON_OPTS="/var/www/php-cache/testServer.php"
 
 START_OPTS="--start --background --make-pidfile --pidfile ${PIDFILE} --exec ${DAEMON} ${DAEMON_OPTS}"
 STOP_OPTS="--stop --pidfile ${PIDFILE}"

@@ -24,10 +24,10 @@ class Bucket implements StorageInterface
         return gzuncompress($this->entries[$key]['content']);
     }
 
-    public function store($key, $entry)
+    public function store($key, $entry, $time = null)
     {
         $this->entries[$key]['content'] = gzcompress($entry, 9);
-        $this->entries[$key]['created_time'] = time();
+        $this->entries[$key]['created_time'] = is_null($time) ? time() : $time;
     }
     
     public function getEntries()
