@@ -29,6 +29,9 @@ class CacheServerFactory
     
     private function restoreFromBackup($backupDir, $bucket)
     {
+        if(! file_exists($backupDir)) {
+            return $bucket;
+        }
         foreach(new \DirectoryIterator($backupDir) as $file) {
             if(! $file->isDot() && $file->isFile()) {
                 $keyParts = explode('.', $file->getFilename());
@@ -39,8 +42,8 @@ class CacheServerFactory
                     $contents .= $handle->fread(128);
                 }
                 if($contents != "") {
-                    $uncompressed = gzuncompress($contents);
-                    $unserialized = unserialize($uncompressed);
+                    $unserialized = unserialize($contents);
+                    $unserialized['content'] = gzuncompress($unserialized['content']);
                     $bucket->store($key, $unserialized['content'], $unserialized['created_time']);
                 }
             }
