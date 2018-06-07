@@ -5,10 +5,16 @@ Cache implementation for php
 #### Prequests:
 - PHP 5/7
 - composer
-#### First you have to run:
+#### Installing via composer:
+```
+composer require kdudas/php-cache
+```
+##### NOTE:
+If you do not install via composer, you have to run:
 ```
 composer install
 ```
+in the root folder of the project
 #### Supperted data types:
 - String
 - Integer/Float/Double
