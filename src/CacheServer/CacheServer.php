@@ -74,11 +74,11 @@ class CacheServer implements CacheServerInterface
                 }
             }
         }
+        $this->close();
     }
     
     public function close()
     {
-        $this->running = false;
         $this->ioHandler->closeSocket($this->socket);
     }
 }

@@ -41,7 +41,7 @@ class Maintainer
      * 
      * @param Bucket $bucket
      */
-    private function backup($bucket)
+    public function backup($bucket)
     {
         $this->createBackupDir();
         $this->backupToFile($bucket);
