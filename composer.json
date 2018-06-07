@@ -2,6 +2,7 @@
     "name": "dude920228/php-cache",
     "description": "Simple cache implementation in php",
     "type": "library",
+    "license": "GPL 3.0",
     "authors": [
         {
             "name": "Dudás Krisztián",
