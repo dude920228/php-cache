@@ -32,6 +32,7 @@ class CacheIOHandler
     public function createServerSocket()
     {
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
         $bindResult = socket_bind($socket, $this->serverIp, $this->serverPort);
         if(! $bindResult) {
             $errorCode = socket_last_error($socket);

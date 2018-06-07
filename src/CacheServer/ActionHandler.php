@@ -2,6 +2,8 @@
 
 namespace PhpCache\CacheServer;
 
+use ReflectionMethod;
+
 /**
  * Description of ActionHandler
  *
@@ -12,25 +14,33 @@ class ActionHandler
 
     public function __invoke($data, $bucket, $ioHandler, $connection)
     {
-        switch ($data['action']) {
-            case 'set':
-                $package = $data['message'];
-                $bucket->store($data['key'], $package);
-                $ioHandler->closeSocket($connection);
-                break;
-            case 'get':
-                $key = $data['key'];
-                $package = $bucket->get($key);
-                $dataToSend = serialize($package);
-                $ioHandler->writeToSocket($connection, $dataToSend);
-                $ioHandler->closeSocket($connection);
-                break;
-            case 'delete':
-                $key = $data['key'];
-                $bucket->delete($key);
-                $ioHandler->closeSocket($connection);
-                break;
-        }
+        $action = $data['action'];
+        $functionName = 'handle'.ucfirst($action);
+        call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection]);
     }
+
+    private function handleSet($data, $bucket, $ioHandler, $connection)
+    {
+        $package = $data['message'];
+        $bucket->store($data['key'], $package);
+        $ioHandler->closeSocket($connection);
+    }
+
+    private function handleGet($data, $bucket, $ioHandler, $connection)
+    {
+        $key = $data['key'];
+        $package = $bucket->get($key);
+        $dataToSend = serialize($package);
+        $ioHandler->writeToSocket($connection, $dataToSend);
+        
+        $ioHandler->closeSocket($connection);
+    }
+
+    private function handleDelete($data, $bucket, $ioHandler, $connection)
+    {
+        $key = $data['key'];
+        $bucket->delete($key);
+        $ioHandler->closeSocket($connection);
+    }
+
 }
-    
