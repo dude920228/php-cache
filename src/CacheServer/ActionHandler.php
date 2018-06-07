@@ -16,31 +16,41 @@ class ActionHandler
     {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
-        call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection]);
+        if(! method_exists($this, $functionName)) {
+            return false;
+        }
+        return call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection]);
+        
     }
 
     private function handleSet($data, $bucket, $ioHandler, $connection)
     {
         $package = $data['message'];
-        $bucket->store($data['key'], $package);
+        $success = $bucket->store($data['key'], $package);
         $ioHandler->closeSocket($connection);
+        return $success;
     }
 
     private function handleGet($data, $bucket, $ioHandler, $connection)
     {
         $key = $data['key'];
         $package = $bucket->get($key);
+        if(! $package) {
+            return false;
+        }
         $dataToSend = serialize($package);
         $ioHandler->writeToSocket($connection, $dataToSend);
         
         $ioHandler->closeSocket($connection);
+        return true;
     }
 
     private function handleDelete($data, $bucket, $ioHandler, $connection)
     {
         $key = $data['key'];
-        $bucket->delete($key);
+        $success = $bucket->delete($key);
         $ioHandler->closeSocket($connection);
+        return $success;
     }
 
 }

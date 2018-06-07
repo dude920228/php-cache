@@ -19,15 +19,20 @@ class Bucket implements StorageInterface
     public function get($key)
     {
         if(!array_key_exists($key, $this->entries)) {
-            return null;
+            return false;
         }
         return gzuncompress($this->entries[$key]['content']);
     }
 
-    public function store($key, $entry, $time = null)
+    private function store($key, $entry, $time = null)
     {
-        $this->entries[$key]['content'] = gzcompress($entry, 9);
+        $compressed = gzcompress($entry, 9);
+        $this->entries[$key]['content'] = $compressed;
         $this->entries[$key]['created_time'] = is_null($time) ? time() : $time;
+        if(! $compressed) {
+            return false;
+        }
+        return true;
     }
     
     public function getEntries()
@@ -39,6 +44,8 @@ class Bucket implements StorageInterface
     {
         if(array_key_exists($key, $this->entries)) {
             unset($this->entries[$key]);
+            return true;
         }
+        return false;
     }
 }
