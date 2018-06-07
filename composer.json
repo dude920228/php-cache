@@ -9,7 +9,9 @@
         }
     ],
     "require": {
-        "psr/container": "^1.0"
+        "php": ">=5.3",
+        "psr/container": "^1.0",
+        "ext-sockets": "*"
     },
     "autoload": {
         "psr-4": {
