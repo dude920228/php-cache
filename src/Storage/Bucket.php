@@ -24,7 +24,7 @@ class Bucket implements StorageInterface
         return gzuncompress($this->entries[$key]['content']);
     }
 
-    private function store($key, $entry, $time = null)
+    public function store($key, $entry, $time = null)
     {
         $compressed = gzcompress($entry, 9);
         $this->entries[$key]['content'] = $compressed;
