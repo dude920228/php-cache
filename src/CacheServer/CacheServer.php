@@ -69,8 +69,8 @@ class CacheServer implements CacheServerInterface
                 $this->clients[$clientId] = $connection;
                 socket_set_nonblock($connection);
                 $read = $this->clients;
-                $write = [];
-                $except = [];
+                $write = array();
+                $except = array();
                 socket_select($read, $write, $except, null);
                 $this->maintainer->checkBackup(time(), $this->bucket);
                 $dataString = $this->ioHandler->readFromSocket($connection);
