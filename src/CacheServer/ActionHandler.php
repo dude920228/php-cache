@@ -27,7 +27,6 @@ class ActionHandler
     {
         $package = $data['message'];
         $success = $bucket->store($data['key'], $package);
-        $ioHandler->closeSocket($connection);
         return $success;
     }
 
@@ -41,7 +40,6 @@ class ActionHandler
         $dataToSend = serialize($package);
         $ioHandler->writeToSocket($connection, $dataToSend);
         
-        $ioHandler->closeSocket($connection);
         return true;
     }
 
@@ -49,7 +47,6 @@ class ActionHandler
     {
         $key = $data['key'];
         $success = $bucket->delete($key);
-        $ioHandler->closeSocket($connection);
         return $success;
     }
 

@@ -53,5 +53,6 @@ class CacheClient implements ClientInterface
         $socket = $this->ioHandler->createClientSocket();
         $dataString = serialize($data);
         $this->ioHandler->writeToSocket($socket, $dataString);
+        $this->ioHandler->closeSocket($socket);
     }
 }
