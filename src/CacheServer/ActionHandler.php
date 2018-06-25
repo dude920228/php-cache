@@ -49,5 +49,13 @@ class ActionHandler
         $success = $bucket->delete($key);
         return $success;
     }
+    
+    private function handleKeys($data, $bucket, $ioHandler, $connection)
+    {
+        $keys = $bucket->getKeys();
+        $dataToSend = serialize($keys);
+        $ioHandler->writeToSocket($connection, $dataToSend);
+        return true;
+    }
 
 }

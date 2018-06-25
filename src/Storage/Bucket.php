@@ -50,7 +50,12 @@ class Bucket implements StorageInterface, ArrayAccess
         }
         return false;
     }
-
+    
+    public function getKeys()
+    {
+        return array_keys($this->entries);
+    }
+    
     public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->entries);
