@@ -19,7 +19,13 @@
             "PhpCache\\":"src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpCache\\Tests\\": "tests/"
+        }
+    },
     "require-dev": {
-        "phan/phan": "^0.12.11"
+        "phan/phan": "^0.12.11",
+        "phpunit/phpunit": "^7.2"
     }
 }
