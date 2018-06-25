@@ -2,12 +2,14 @@
 
 namespace PhpCache\Storage;
 
+use ArrayAccess;
+
 /**
  * Description of MessageBucket
  *
  * @author dude920228
  */
-class Bucket implements StorageInterface
+class Bucket implements StorageInterface, ArrayAccess
 {
     private $entries;
     
@@ -48,4 +50,25 @@ class Bucket implements StorageInterface
         }
         return false;
     }
+
+    public function offsetExists($offset): bool
+    {
+        return array_key_exists($offset, $this->entries);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->entries[$offset];
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        $this->entries[$offset] = $value;
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->entries[$offset]);
+    }
+
 }
