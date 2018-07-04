@@ -17,8 +17,8 @@ return array(
     'ip' => '0.0.0.0',
     'port' => 1234,
     'bufferSize' => 256,
-    'ttl' => 5, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
-    'backupTime' => 5, // Creates a file storage backup every $backupTime seconds (Default 3600)
+    'ttl' => 3600, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
+    'backupTime' => 3600, // Creates a file storage backup every $backupTime seconds (Default 3600)
     'backupDir' => __DIR__.'/.backup',
     'factories' => array(
         CacheServer::class => CacheServerFactory::class,
