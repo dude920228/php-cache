@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpMq\ServiceManager\Exception;
+namespace PhpCache\ServiceManager\Exception;
 
 /**
  * Description of NotFoundException

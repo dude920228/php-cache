@@ -2,7 +2,7 @@
 
 namespace PhpCache\ServiceManager;
 
-use PhpMq\ServiceManager\Exception\NotFoundException;
+use PhpCache\ServiceManager\Exception\NotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**
