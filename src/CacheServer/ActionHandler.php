@@ -2,8 +2,6 @@
 
 namespace PhpCache\CacheServer;
 
-use ReflectionMethod;
-
 /**
  * Description of ActionHandler
  *
@@ -19,7 +17,7 @@ class ActionHandler
         if(! method_exists($this, $functionName)) {
             return false;
         }
-        return call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection]);
+        return call_user_func_array(array($this, $functionName), array($data, $bucket, $ioHandler, $connection));
         
     }
 

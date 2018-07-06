@@ -67,12 +67,12 @@ class CacheServer implements CacheServerInterface
             $this->maintainer->maintainBucket($this->bucket);
             if (($connection = @socket_accept($this->socket))) {
                 $clientId = uniqid();
-                $this->clients[$clientId] = $connection;
                 socket_set_nonblock($connection);
+                $this->clients[$clientId] = $connection;
                 $read = $this->clients;
                 $write = array();
                 $except = array();
-                socket_select($read, $write, $except, null);
+                socket_select($read, $write, $except, 10);
                 $dataString = $this->ioHandler->readFromSocket($connection);
                 $data = unserialize($dataString);
                 ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection);
