@@ -78,7 +78,7 @@ class CacheIOHandler
         while(socket_recv($socket, $buffer, $this->bufferLength, MSG_WAITALL)) {
             $recv .= $buffer;
         }
-        
+
         return $recv;
     }
     

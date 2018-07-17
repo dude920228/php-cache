@@ -9,7 +9,7 @@ use ArrayAccess;
  *
  * @author dude920228
  */
-class Bucket implements StorageInterface, ArrayAccess
+class Bucket implements StorageInterface
 {
     private $entries;
     
@@ -55,25 +55,4 @@ class Bucket implements StorageInterface, ArrayAccess
     {
         return array_keys($this->entries);
     }
-    
-    public function offsetExists($offset): bool
-    {
-        return array_key_exists($offset, $this->entries);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->entries[$offset];
-    }
-
-    public function offsetSet($offset, $value): void
-    {
-        $this->entries[$offset] = $value;
-    }
-
-    public function offsetUnset($offset): void
-    {
-        unset($this->entries[$offset]);
-    }
-
 }

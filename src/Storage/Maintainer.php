@@ -29,8 +29,8 @@ class Maintainer
     {
         $entries = $bucket->getEntries();
         foreach($entries as $key => $entry) {
-            $now = time();
-            $entryElapsedTime = $now - $entry['created_time'];
+            
+            $entryElapsedTime = time() - $entry['created_time'];
             if($entryElapsedTime >= $this->ttl) {
                 
                 $bucket->delete($key);

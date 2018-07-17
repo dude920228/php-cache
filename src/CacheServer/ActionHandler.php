@@ -55,5 +55,16 @@ class ActionHandler
         $ioHandler->writeToSocket($connection, $dataToSend);
         return true;
     }
-
+    
+    private function handleGetEntries($data, $bucket, $ioHandler, $connection)
+    {
+        $entries = $bucket->getEntries();
+        $entriesFormatted = array();
+        foreach($entries as $key => $value) {
+            $entriesFormatted[$key] = gzuncompress($value['content']);
+        }
+        $dataToSend = serialize($entriesFormatted);
+        $ioHandler->writeToSocket($connection, $dataToSend);
+        return true;
+    }
 }

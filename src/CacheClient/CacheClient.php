@@ -41,7 +41,6 @@ class CacheClient implements ClientInterface
         $dataString = serialize($data);
         $this->ioHandler->writeToSocket($socket, $dataString);
         $recv = $this->ioHandler->readFromSocket($socket);
-        
         $this->ioHandler->closeSocket($socket);
         
         return unserialize($recv);
@@ -65,5 +64,16 @@ class CacheClient implements ClientInterface
         $keys = $this->ioHandler->readFromSocket($socket);
         $this->ioHandler->closeSocket($socket);
         return unserialize($keys);
+    }
+    
+    public function getEntries()
+    {
+        $data = array('action' => 'getEntries');
+        $socket = $this->ioHandler->createClientSocket();
+        $dataString = serialize($data);
+        $this->ioHandler->writeToSocket($socket, $dataString);
+        $entries = $this->ioHandler->readFromSocket($socket);
+        $this->ioHandler->closeSocket($socket);
+        return unserialize($entries);
     }
 }
