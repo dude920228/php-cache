@@ -32,7 +32,7 @@ class ActionHandler
     {
         $key = $data['key'];
         $package = $bucket->get($key);
-        if(! $package) {
+        if($package === false) {
             return false;
         }
         $dataToSend = serialize($package);

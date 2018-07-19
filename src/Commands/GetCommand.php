@@ -47,7 +47,7 @@ class GetCommand extends Command
         $client = $this->serviceManager->get(CacheClient::class);
         if(!is_null($key)) {
             $value = $client->get($key);
-            if(!$value) {
+            if($value === false) {
                 $output->writeln('<comment>No entry found for key: '.$key.'</comment>');
                 return;
             }
