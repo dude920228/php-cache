@@ -5,17 +5,18 @@ namespace PhpCache\Commands;
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\ServiceManager\ServiceManager;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Description of PhpCache
+ * Description of GetKeysCommand
  *
  * @author kdudas
  */
-class DeleteCommand extends Command
+class GetKeysCommand extends Command
 {
+    
     private $serviceManager;
     
     public function __construct($config, $name = null)
@@ -23,24 +24,26 @@ class DeleteCommand extends Command
         parent::__construct($name);
         $this->serviceManager = new ServiceManager($config);
     }
+    
     protected function configure()
     {
-        $this->setName('delete');
-        $this->setHelp('This command allows you to delete entries from the cache pool by key');
-        $this->addArgument('key', InputArgument::REQUIRED, 'Key for the cache entry to be deleted');
+        $this->setName('keys');
+        $this->setHelp('Use this command to list existing keys in the cache pool');
     }
-    
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->deleteEntry($input, $output);
+        $this->getKeys($output);
     }
     
-    private function deleteEntry(InputInterface $input, OutputInterface $output)
+    private function getKeys($output)
     {
-        $key = $input->getArgument('key');
+        $table = new Table($output);
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);
-        $client->delete($key);
+        $keys  = $client->getKeys();
+        $table->setHeaders(array('Key'));
+        $table->addRows(array($rows));
+        $table->render();
     }
 }

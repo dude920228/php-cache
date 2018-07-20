@@ -1,14 +1,11 @@
 <?php
 
-/*
- * All rights reserved © 2018 Legow Hosting Kft.
- */
-
 namespace PhpCache\Commands;
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\ServiceManager\ServiceManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,20 +42,23 @@ class GetCommand extends Command
         $key = $input->getArgument('key');
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);
+        $table = (new Table($output))->setHeaders(array('KEY', 'VALUE'));
         if(!is_null($key)) {
             $value = $client->get($key);
             if($value === false) {
                 $output->writeln('<comment>No entry found for key: '.$key.'</comment>');
                 return;
             }
-            $output->writeln(array($key." ======> ".$value));
+            $table->setRows(array(array($key, $value)));
+            $table->render();
             return;
         }
         $entries = $client->getEntries();
         $op = array();
         foreach($entries as $key => $value) {
-            $op[] = $key." ======> ". $value;
+            $op[] = array($key, $value);
         }
-        $output->writeln($op);
+        $table->setRows($op);
+        $table->render();
     }
 }

@@ -3,6 +3,7 @@
 
 use PhpCache\Commands\DeleteCommand;
 use PhpCache\Commands\GetCommand;
+use PhpCache\Commands\GetKeysCommand;
 use PhpCache\Commands\SetCommand;
 use Symfony\Component\Console\Application;
 
@@ -15,4 +16,5 @@ $app = new Application();
 $app->add(new GetCommand($config));
 $app->add(new SetCommand($config));
 $app->add(new DeleteCommand($config));
+$app->add(new GetKeysCommand($config));
 $app->run();

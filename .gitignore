@@ -2,3 +2,5 @@ vendor/
 nbproject/
 /.backup
 temp/
+memdump.json
+stress_test_parallel.php
