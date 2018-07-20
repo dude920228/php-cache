@@ -42,8 +42,10 @@ class GetKeysCommand extends Command
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);
         $keys  = $client->getKeys();
-        $table->setHeaders(array('Key'));
-        $table->addRows(array($rows));
+        $table->setHeaders(array('KEYS'));
+        foreach($keys as $key) {
+            $table->addRows(array(array($key)));
+        }
         $table->render();
     }
 }
