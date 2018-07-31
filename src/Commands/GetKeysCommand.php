@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Description of GetKeysCommand
  *
- * @author kdudas
+ * @author dude920228
  */
 class GetKeysCommand extends Command
 {

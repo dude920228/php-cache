@@ -7,9 +7,6 @@ use PhpCache\Commands\GetKeysCommand;
 use PhpCache\Commands\SetCommand;
 use Symfony\Component\Console\Application;
 
-/* 
- * All rights reserved © 2018 Legow Hosting Kft.
- */
 require_once 'vendor/autoload.php';
 $config = require_once 'config.php';
 $app = new Application();
