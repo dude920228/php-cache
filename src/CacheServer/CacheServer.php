@@ -48,9 +48,8 @@ class CacheServer implements CacheServerInterface
     const NACK = 0;
 
     public function __construct(
-    $ioHandler, $bucket, $actionHandler, $maintainer
-    )
-    {
+        $ioHandler, $bucket, $actionHandler, $maintainer
+    ) {
         $this->running = true;
         $this->ioHandler = $ioHandler;
         $this->bucket = $bucket;

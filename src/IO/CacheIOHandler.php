@@ -38,7 +38,8 @@ class CacheIOHandler
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
             throw new IOException(
-                sprintf("Couldn't create server socket on ip: %s, port: %d. Reason: %s",
+                sprintf(
+                    "Couldn't create server socket on ip: %s, port: %d. Reason: %s",
                     $this->serverIp,
                     $this->serverPort,
                     $errorMsg
@@ -61,7 +62,8 @@ class CacheIOHandler
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
             throw new IOException(
-                sprintf("Couldn't connect to server socket on ip: %s, port: %d. Reason: %s",
+                sprintf(
+                    "Couldn't connect to server socket on ip: %s, port: %d. Reason: %s",
                     $this->serverIp,
                     $this->serverPort,
                     $errorMsg

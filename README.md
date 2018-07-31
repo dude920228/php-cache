@@ -7,7 +7,7 @@ Cache implementation for php
 - composer
 #### Installing via composer:
 ```
-composer require dude920228/php-cache
+composer require kdudas/php-cache
 ```
 ##### NOTE:
 If you do not install via composer, you have to run:

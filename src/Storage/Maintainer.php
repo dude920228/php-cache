@@ -65,7 +65,8 @@ class Maintainer
      * 
      * @param Bucket $bucket
      */
-    private function backupToFile($bucket) {
+    private function backupToFile($bucket)
+    {
         foreach($bucket->getEntries() as $key => $entry) {
             file_put_contents($this->backupDir.'/'.$key.'.dat', serialize($entry));
         }

@@ -26,6 +26,7 @@
         }
     },
     "require-dev": {
-        "phan/phan": "^0.12.11"
+        "phan/phan": "^0.12.11",
+        "squizlabs/php_codesniffer": "^3.3"
     }
 }
