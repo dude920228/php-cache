@@ -13,13 +13,15 @@ class Maintainer
     private $lastBackupRun;
     private $backupDir;
     private $backupTime;
+    private $memoryLimit;
     
-    public function __construct($ttl, $backupDir, $backupTime)
+    public function __construct($ttl, $backupDir, $backupTime, $memoryLimit)
     {
         $this->ttl = $ttl;
         $this->lastBackupRun = time();
         $this->backupDir = $backupDir;
         $this->backupTime = $backupTime;
+        $this->memoryLimit = $memoryLimit;
     }
     /**
      * 
@@ -37,6 +39,16 @@ class Maintainer
             }
         }
     }
+    
+    private function checkMemory($bucket)
+    {
+        $size = 0;
+        foreach($bucket->getEntries() as $entry) {
+            $size += strlen($entry['content']);
+        }
+        return $size;
+    }
+    
     /**
      * 
      * @param Bucket $bucket
@@ -52,7 +64,18 @@ class Maintainer
     {
         if($time - $this->lastBackupRun >= $this->backupTime) {
             $this->backup($bucket);
-        } 
+        }
+    }
+    
+    private function memoryBackup($bucket)
+    {
+        /* @var $bucket Bucket */
+        if($this->checkMemory($bucket) >= $this->memoryLimit) {
+            $this->backup($bucket);
+            foreach($bucket->getEntries() as $key => $entry) {
+                $bucket->delete($key);
+            }
+        }
     }
     
     private function createBackupDir()

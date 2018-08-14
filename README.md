@@ -9,12 +9,6 @@ Cache implementation for php
 ```
 composer require kdudas/php-cache
 ```
-##### NOTE:
-If you do not install via composer, you have to run:
-```
-composer install
-```
-in the root folder of the project
 #### Supperted data types:
 - String
 - Integer/Float/Double
@@ -58,3 +52,8 @@ echo $client->get('test');
 ```
 php testClient.php
 ```
+#### CLI Commands:
+`./phpCache get <key>` gets entries for the specified key. If no key is specified, it returns all entries.
+`./phpCache set <key> <value>` pushes an entry to the cache pool with the given key - value pair.
+`./phpCache delete <key>` deletes the entry with with the given key
+`./phpCache keys` retrieves all keys in the cache pool

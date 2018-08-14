@@ -17,6 +17,7 @@ class MaintainerFactory
         $ttl = 3600;
         $backupDir = __DIR__.'/../../.backup';
         $backupTime = 3600;
+        $memoryLimit = 1024;
         if(array_key_exists('ttl', $config)) {
             $ttl = $config['ttl'];
         }
@@ -26,6 +27,9 @@ class MaintainerFactory
         if(array_key_exists('backupTime', $config)) {
             $backupTime = $config['backupTime'];
         }
-        return new Maintainer($ttl, $backupDir, $backupTime);
+        if(array_key_exists('memoryLimit', $config)) {
+            $memoryLimit = $config['memoryLimit'];
+        }
+        return new Maintainer($ttl, $backupDir, $backupTime, $memoryLimit);
     }
 }
