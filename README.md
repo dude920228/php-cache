@@ -53,7 +53,7 @@ echo $client->get('test');
 php testClient.php
 ```
 #### CLI Commands:
-`./phpCache get <key>` gets entries for the specified key. If no key is specified, it returns all entries.
-`./phpCache set <key> <value>` pushes an entry to the cache pool with the given key - value pair.
-`./phpCache delete <key>` deletes the entry with with the given key
+`./phpCache get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
+`./phpCache set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
+`./phpCache delete <key>` deletes the entry with with the given key  
 `./phpCache keys` retrieves all keys in the cache pool
