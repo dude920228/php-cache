@@ -3,7 +3,7 @@
 namespace PhpCache\Storage\Exception;
 
 /**
- * Description of newPHPClass
+ * Description of newPHPClass.
  *
  * @author dude920228
  */

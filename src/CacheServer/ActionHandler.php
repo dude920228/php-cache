@@ -3,28 +3,28 @@
 namespace PhpCache\CacheServer;
 
 /**
- * Description of ActionHandler
+ * Description of ActionHandler.
  *
  * @author dude920228
  */
 class ActionHandler
 {
-
     public function __invoke($data, $bucket, $ioHandler, $connection, $server)
     {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
-        if(! method_exists($this, $functionName)) {
+        if (!method_exists($this, $functionName)) {
             return false;
         }
-        return call_user_func_array(array($this, $functionName), array($data, $bucket, $ioHandler, $connection, $server));
-        
+
+        return call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection, $server]);
     }
 
     private function handleSet($data, $bucket, $ioHandler, $connection, $server)
     {
         $package = $data['message'];
         $success = $bucket->store($data['key'], $package);
+
         return $success;
     }
 
@@ -32,12 +32,12 @@ class ActionHandler
     {
         $key = $data['key'];
         $package = $bucket->get($key);
-        if($package === false) {
+        if ($package === false) {
             return false;
         }
         $dataToSend = serialize($package);
         $ioHandler->writeToSocket($connection, $dataToSend);
-        
+
         return true;
     }
 
@@ -45,29 +45,32 @@ class ActionHandler
     {
         $key = $data['key'];
         $success = $bucket->delete($key);
+
         return $success;
     }
-    
+
     private function handleKeys($data, $bucket, $ioHandler, $connection, $server)
     {
         $keys = $bucket->getKeys();
         $dataToSend = serialize($keys);
         $ioHandler->writeToSocket($connection, $dataToSend);
+
         return true;
     }
-    
+
     private function handleGetEntries($data, $bucket, $ioHandler, $connection)
     {
         $entries = $bucket->getEntries();
-        $entriesFormatted = array();
-        foreach($entries as $key => $value) {
+        $entriesFormatted = [];
+        foreach ($entries as $key => $value) {
             $entriesFormatted[$key] = gzuncompress($value['content']);
         }
         $dataToSend = serialize($entriesFormatted);
         $ioHandler->writeToSocket($connection, $dataToSend);
+
         return true;
     }
-    
+
     private function handleQuit($data, $bucket, $ioHandler, $connection, $server)
     {
         $server->stop();

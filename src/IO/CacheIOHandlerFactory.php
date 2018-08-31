@@ -5,7 +5,7 @@ namespace PhpCache\IO;
 use Psr\Container\ContainerInterface;
 
 /**
- * Description of CacheIOHandlerFactory
+ * Description of CacheIOHandlerFactory.
  *
  * @author dude920228
  */
@@ -15,6 +15,7 @@ class CacheIOHandlerFactory
     {
         $config = $container->getConfig();
         $ioHandler = new CacheIOHandler($config['ip'], $config['port'], $config['bufferSize']);
+
         return $ioHandler;
     }
 }

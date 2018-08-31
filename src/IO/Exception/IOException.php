@@ -3,7 +3,7 @@
 namespace PhpCache\IO\Exception;
 
 /**
- * Description of IOException
+ * Description of IOException.
  *
  * @author dude920228
  */

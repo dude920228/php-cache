@@ -1,4 +1,5 @@
 <?php
+
 $key = $argv[1];
 $value = $argv[2];
 require_once 'vendor/autoload.php';

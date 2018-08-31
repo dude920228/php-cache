@@ -12,22 +12,22 @@ use PhpCache\Storage\BucketFactory;
 use PhpCache\Storage\Maintainer;
 use PhpCache\Storage\MaintainerFactory;
 
-return array(
+return [
     'memoryLimit' => 1024, //To be used in future feature: Backing up data to file, after Bucket size exceeds memory limit
-    'ip' => '0.0.0.0',
-    'port' => 1234,
-    'bufferSize' => 256,
-    'ttl' => 3600, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
-    'backupTime' => 3600, // Creates a file storage backup every $backupTime seconds (Default 3600)
-    'backupDir' => __DIR__.'/.backup',
-    'factories' => array(
-        CacheServer::class => CacheServerFactory::class,
+    'ip'          => '0.0.0.0',
+    'port'        => 1234,
+    'bufferSize'  => 256,
+    'ttl'         => 3600, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
+    'backupTime'  => 3600, // Creates a file storage backup every $backupTime seconds (Default 3600)
+    'backupDir'   => __DIR__.'/.backup',
+    'factories'   => [
+        CacheServer::class    => CacheServerFactory::class,
         CacheIOHandler::class => CacheIOHandlerFactory::class,
-        CacheClient::class => CacheClientFactory::class,
-        Maintainer::class => MaintainerFactory::class,
-        Bucket::class => BucketFactory::class,
-    ),
-    'invokables' => array(
+        CacheClient::class    => CacheClientFactory::class,
+        Maintainer::class     => MaintainerFactory::class,
+        Bucket::class         => BucketFactory::class,
+    ],
+    'invokables' => [
         ActionHandler::class => ActionHandler::class,
-    )
-);
+    ],
+];
