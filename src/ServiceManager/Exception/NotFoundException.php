@@ -3,7 +3,7 @@
 namespace PhpCache\ServiceManager\Exception;
 
 /**
- * Description of NotFoundException
+ * Description of NotFoundException.
  *
  * @author dude920228
  */
