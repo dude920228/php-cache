@@ -1,3 +1,4 @@
+[![StyleCI](https://github.styleci.io/repos/135454839/shield?branch=master)](https://github.styleci.io/repos/135454839)
 # php-cache
 Cache implementation for php
 
