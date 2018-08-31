@@ -8,20 +8,20 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Description of SetCommand
+ * Description of SetCommand.
  *
  * @author dude920228
  */
 class SetCommand extends Command
 {
     private $serviceManager;
-    
+
     public function __construct($config, $name = null)
     {
         parent::__construct($name);
         $this->serviceManager = new ServiceManager($config);
     }
-    
+
     protected function configure()
     {
         $this->setName('set');
@@ -29,12 +29,12 @@ class SetCommand extends Command
         $this->addArgument('key', InputArgument::REQUIRED, 'The key assigned to the cache entry');
         $this->addArgument('value', InputArgument::REQUIRED, 'The value of the cache entry');
     }
-    
+
     protected function execute($input, $output)
     {
         $this->set($input, $output);
     }
-    
+
     private function set($input, $output)
     {
         /* @var $client CacheClient */

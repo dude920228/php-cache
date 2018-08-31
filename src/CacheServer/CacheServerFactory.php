@@ -8,7 +8,7 @@ use PhpCache\Storage\Maintainer;
 use Psr\Container\ContainerInterface;
 
 /**
- * Description of CacheServerFactory
+ * Description of CacheServerFactory.
  *
  * @author dude920228
  */
@@ -21,6 +21,7 @@ class CacheServerFactory
         $bucket = $container->get(Bucket::class);
         $actionHandler = $container->get(ActionHandler::class);
         $maintainer = $container->get(Maintainer::class);
+
         return new CacheServer($ioHandler, $bucket, $actionHandler, $maintainer);
     }
 }

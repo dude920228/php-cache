@@ -5,13 +5,12 @@ namespace PhpCache\IO;
 use PhpCache\IO\Exception\IOException;
 
 /**
- * Description of CacheIOHandler
+ * Description of CacheIOHandler.
  *
  * @author dude920228
  */
 class CacheIOHandler
 {
-
     private $serverIp;
     private $serverPort;
     private $bufferLength;
@@ -26,6 +25,7 @@ class CacheIOHandler
     public function writeToSocket($socket, $dataString)
     {
         $bytes = socket_write($socket, $dataString, strlen($dataString));
+
         return $bytes;
     }
 
@@ -34,9 +34,10 @@ class CacheIOHandler
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
         $bindResult = socket_bind($socket, $this->serverIp, $this->serverPort);
-        if(! $bindResult) {
+        if (!$bindResult) {
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
+
             throw new IOException(
                 sprintf(
                     "Couldn't create server socket on ip: %s, port: %d. Reason: %s",
@@ -47,6 +48,7 @@ class CacheIOHandler
             );
         }
         socket_listen($socket);
+
         return $socket;
     }
 
@@ -58,9 +60,10 @@ class CacheIOHandler
             $this->serverIp,
             $this->serverPort
         );
-        if(! $connectionResult) {
+        if (!$connectionResult) {
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
+
             throw new IOException(
                 sprintf(
                     "Couldn't connect to server socket on ip: %s, port: %d. Reason: %s",
@@ -70,25 +73,26 @@ class CacheIOHandler
                 )
             );
         }
+
         return $socket;
     }
 
     public function readFromSocket($socket)
     {
-        $recv = "";
-        $buffer = "";
-        while(socket_recv($socket, $buffer, $this->bufferLength, MSG_WAITALL)) {
+        $recv = '';
+        $buffer = '';
+        while (socket_recv($socket, $buffer, $this->bufferLength, MSG_WAITALL)) {
             $recv .= $buffer;
         }
 
         return $recv;
     }
-    
+
     public function closeSocket($socket)
     {
         return socket_close($socket);
     }
-    
+
     public function getServerIp()
     {
         return $this->serverIp;
@@ -103,5 +107,4 @@ class CacheIOHandler
     {
         return $this->bufferLength;
     }
-
 }

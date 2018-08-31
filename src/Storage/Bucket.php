@@ -2,27 +2,26 @@
 
 namespace PhpCache\Storage;
 
-use ArrayAccess;
-
 /**
- * Description of MessageBucket
+ * Description of MessageBucket.
  *
  * @author dude920228
  */
 class Bucket implements StorageInterface
 {
     private $entries;
-    
+
     public function __construct()
     {
-        $this->entries = array();
+        $this->entries = [];
     }
-    
+
     public function get($key)
     {
-        if(!array_key_exists($key, $this->entries)) {
+        if (!array_key_exists($key, $this->entries)) {
             return false;
         }
+
         return gzuncompress($this->entries[$key]['content']);
     }
 
@@ -31,26 +30,29 @@ class Bucket implements StorageInterface
         $compressed = gzcompress($entry, 9);
         $this->entries[$key]['content'] = $compressed;
         $this->entries[$key]['created_time'] = is_null($time) ? time() : $time;
-        if(! $compressed) {
+        if (!$compressed) {
             return false;
         }
+
         return true;
     }
-    
+
     public function getEntries()
     {
         return $this->entries;
     }
-    
+
     public function delete($key)
     {
-        if(array_key_exists($key, $this->entries)) {
+        if (array_key_exists($key, $this->entries)) {
             unset($this->entries[$key]);
+
             return true;
         }
+
         return false;
     }
-    
+
     public function getKeys()
     {
         return array_keys($this->entries);
