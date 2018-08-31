@@ -14,7 +14,7 @@ composer require kdudas/php-cache
 - Integer/Float/Double
 - Array (serialized)
 - Objects (serialized)
-#### Server side initiation:
+#### Creating a new server instance
 ```
 <?php
 include_once 'vendor/autoload.php';
@@ -32,8 +32,17 @@ $server->run();
 php testServer.php
 ```
 #### OR
-Read the guide in `daemon.sh` on how to run a php script as a service
-#### Client side initiation:
+```
+mv daemon.sh /etc/init.d/php-cache
+chmod +x /etc/init.d/php-cache
+# in this case you have to make the phar file globally executable because the daemon file will run it before stopping the service
+mv php-cache.phar /usr/local/bin/php-cache
+chmod +x /usr/local/bin/php-cache
+# now you can use systemctl style service management
+sudo service php-cache start
+```
+##### Note: you can modify the contents of `daemon.sh` if you want to use other directories
+#### Creating a new client instance
 ```
 <?php
 include_once('vendor/autoload.php');
@@ -53,7 +62,7 @@ echo $client->get('test');
 php testClient.php
 ```
 #### CLI Commands:
-`./phpCache get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
-`./phpCache set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
-`./phpCache delete <key>` deletes the entry with with the given key  
-`./phpCache keys` retrieves all keys in the cache pool
+`./php-cache.phar get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
+`./php-cache.phar set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
+`./php-cache.phar delete <key>` deletes the entry with with the given key  
+`./php-cache.phar keys` retrieves all keys in the cache pool
