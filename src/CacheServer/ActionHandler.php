@@ -10,25 +10,25 @@ namespace PhpCache\CacheServer;
 class ActionHandler
 {
 
-    public function __invoke($data, $bucket, $ioHandler, $connection)
+    public function __invoke($data, $bucket, $ioHandler, $connection, $server)
     {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
         if(! method_exists($this, $functionName)) {
             return false;
         }
-        return call_user_func_array(array($this, $functionName), array($data, $bucket, $ioHandler, $connection));
+        return call_user_func_array(array($this, $functionName), array($data, $bucket, $ioHandler, $connection, $server));
         
     }
 
-    private function handleSet($data, $bucket, $ioHandler, $connection)
+    private function handleSet($data, $bucket, $ioHandler, $connection, $server)
     {
         $package = $data['message'];
         $success = $bucket->store($data['key'], $package);
         return $success;
     }
 
-    private function handleGet($data, $bucket, $ioHandler, $connection)
+    private function handleGet($data, $bucket, $ioHandler, $connection, $server)
     {
         $key = $data['key'];
         $package = $bucket->get($key);
@@ -41,14 +41,14 @@ class ActionHandler
         return true;
     }
 
-    private function handleDelete($data, $bucket, $ioHandler, $connection)
+    private function handleDelete($data, $bucket, $ioHandler, $connection, $server)
     {
         $key = $data['key'];
         $success = $bucket->delete($key);
         return $success;
     }
     
-    private function handleKeys($data, $bucket, $ioHandler, $connection)
+    private function handleKeys($data, $bucket, $ioHandler, $connection, $server)
     {
         $keys = $bucket->getKeys();
         $dataToSend = serialize($keys);
@@ -66,5 +66,10 @@ class ActionHandler
         $dataToSend = serialize($entriesFormatted);
         $ioHandler->writeToSocket($connection, $dataToSend);
         return true;
+    }
+    
+    private function handleQuit($data, $bucket, $ioHandler, $connection, $server)
+    {
+        $server->stop();
     }
 }

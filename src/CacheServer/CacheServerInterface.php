@@ -8,4 +8,5 @@ namespace PhpCache\CacheServer;
 interface CacheServerInterface
 {
     public function run();
+    public function close();
 }

@@ -71,15 +71,19 @@ class CacheServer implements CacheServerInterface
                 socket_select($read, $write, $except, 10);
                 $dataString = $this->ioHandler->readFromSocket($connection);
                 $data = unserialize($dataString);
-                ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection);
+                ($this->actionHandler)($data, $this->bucket, $this->ioHandler, $connection, $this);
                 $this->ioHandler->closeSocket($connection);
                 unset($this->clients[$clientId]);
             }
         }
-        $this->close();
     }
-
-    private function close()
+    
+    public function stop()
+    {
+        $this->maintainer->backup($this->bucket);
+    }
+    
+    public function close()
     {
         $this->ioHandler->closeSocket($this->socket);
     }
