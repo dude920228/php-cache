@@ -1,12 +1,12 @@
 <?php
 $key = $argv[1];
 $value = $argv[2];
-include_once('vendor/autoload.php');
+require_once 'vendor/autoload.php';
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\ServiceManager\ServiceManager;
 
-$config = require_once 'config.php';
+$config = include_once 'config.php';
 $serviceManager = new ServiceManager($config);
 /* @var $client CacheClient */
 $client = $serviceManager->get(CacheClient::class);

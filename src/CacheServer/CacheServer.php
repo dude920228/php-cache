@@ -44,9 +44,6 @@ class CacheServer implements CacheServerInterface
     
     private $clients;
 
-    const ACK = 1;
-    const NACK = 0;
-
     public function __construct(
         $ioHandler, $bucket, $actionHandler, $maintainer
     ) {
@@ -82,7 +79,7 @@ class CacheServer implements CacheServerInterface
         $this->close();
     }
 
-    public function close()
+    private function close()
     {
         $this->ioHandler->closeSocket($this->socket);
     }
