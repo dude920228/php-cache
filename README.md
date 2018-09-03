@@ -1,4 +1,4 @@
-[![StyleCI](https://github.styleci.io/repos/135454839/shield?branch=master)](https://github.styleci.io/repos/135454839)
+[![StyleCI](https://github.styleci.io/repos/135454839/shield?branch=master)](https://github.styleci.io/repos/135454839) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/dude920228/php-cache/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/dude920228/php-cache/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/dude920228/php-cache/badges/build.png?b=master)](https://scrutinizer-ci.com/g/dude920228/php-cache/build-status/master)
 # php-cache
 Cache implementation for php
 
