@@ -72,8 +72,9 @@ class CacheServer implements CacheServerInterface
         }
     }
 
-    public function stop()
+    public function beforeServiceStop()
     {
+        $this->close();
         $this->maintainer->backup($this->bucket);
     }
 

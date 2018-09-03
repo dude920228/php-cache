@@ -73,6 +73,6 @@ class ActionHandler
 
     private function handleQuit($data, $bucket, $ioHandler, $connection, $server)
     {
-        $server->stop();
+        $server->beforeServiceStop();
     }
 }
