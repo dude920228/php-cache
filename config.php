@@ -15,10 +15,10 @@ use PhpCache\Storage\MaintainerFactory;
 return [
     'memoryLimit' => 1024, //To be used in future feature: Backing up data to file, after Bucket size exceeds memory limit
     'ip'          => '0.0.0.0',
-    'port'        => 1234,
+    'port'        => 9000,
     'bufferSize'  => 256,
     'ttl'         => 3600, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
-    'backupTime'  => 3600, // Creates a file storage backup every $backupTime seconds (Default 3600)
+    'backupTime'  => 1800, // Creates a file storage backup every $backupTime seconds
     'backupDir'   => __DIR__.'/.backup',
     'factories'   => [
         CacheServer::class    => CacheServerFactory::class,
