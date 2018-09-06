@@ -78,7 +78,7 @@ class CacheServer implements CacheServerInterface
         $this->maintainer->backup($this->bucket);
     }
 
-    public function close() 
+    public function close()
     {
         $this->ioHandler->closeSocket($this->socket);
     }
