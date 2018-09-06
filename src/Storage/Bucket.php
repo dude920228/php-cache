@@ -43,10 +43,10 @@ class Bucket implements StorageInterface
 
     private function getFromBackup($key)
     {
-        $contents = "";
-        $handle = fopen($this->backupDir."/".$key.".dat", "r+");
-        if(is_resource($handle)) {
-            while(!feof($handle)) {
+        $contents = '';
+        $handle = fopen($this->backupDir.'/'.$key.'.dat', 'r+');
+        if (is_resource($handle)) {
+            while (!feof($handle)) {
                 $contents .= fread($handle, 32);
             }
         }
