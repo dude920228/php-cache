@@ -9,6 +9,7 @@ namespace PhpCache\Storage;
  */
 class Maintainer
 {
+
     private $ttl;
     private $lastBackupRun;
     private $backupDir;
@@ -59,19 +60,18 @@ class Maintainer
 
     public function checkBackup($time, $bucket)
     {
-        if ($time - $this->lastBackupRun >= $this->backupTime) {
+        if ($time - $this->lastBackupRun >= $this->backupTime ||
+            $this->checkMemory($bucket) >= $this->memoryLimit) {
             $this->backup($bucket);
+            $this->free($bucket);
         }
     }
 
-    private function memoryBackup($bucket)
+    private function free($bucket)
     {
         /* @var $bucket Bucket */
-        if ($this->checkMemory($bucket) >= $this->memoryLimit) {
-            $this->backup($bucket);
-            foreach ($bucket->getEntries() as $key => $entry) {
-                $bucket->delete($key);
-            }
+        foreach ($bucket->getEntries() as $key => $entry) {
+            $bucket->delete($key);
         }
     }
 
@@ -88,7 +88,9 @@ class Maintainer
     private function backupToFile($bucket)
     {
         foreach ($bucket->getEntries() as $key => $entry) {
-            file_put_contents($this->backupDir.'/'.$key.'.dat', serialize($entry));
+            file_put_contents($this->backupDir . '/' . $key . '.dat',
+                    serialize($entry));
         }
     }
+
 }

@@ -35,10 +35,10 @@ class QuitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->quit($input, $output);
+        $this->quit();
     }
 
-    private function quit(InputInterface $input, OutputInterface $output)
+    private function quit()
     {
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);

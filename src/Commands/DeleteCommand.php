@@ -33,10 +33,10 @@ class DeleteCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->deleteEntry($input, $output);
+        $this->deleteEntry($input);
     }
 
-    private function deleteEntry(InputInterface $input, OutputInterface $output)
+    private function deleteEntry(InputInterface $input)
     {
         $key = $input->getArgument('key');
         /* @var $client CacheClient */

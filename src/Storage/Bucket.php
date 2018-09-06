@@ -42,8 +42,10 @@ class Bucket implements StorageInterface
     {
         $contents = "";
         $handle = fopen($this->backupDir."/".$key.".dat", "r+");
-        while(!feof($handle)) {
-            $contents .= fread($handle, 32);
+        if(is_resource($handle)) {
+            while(!feof($handle)) {
+                $contents .= fread($handle, 32);
+            }
         }
         return $contents;
     }

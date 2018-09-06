@@ -90,7 +90,7 @@ class CacheIOHandler
 
     public function closeSocket($socket)
     {
-        return socket_close($socket);
+        socket_close($socket);
     }
 
     public function getServerIp()

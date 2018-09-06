@@ -32,10 +32,10 @@ class SetCommand extends Command
 
     protected function execute($input, $output)
     {
-        $this->set($input, $output);
+        $this->set($input);
     }
 
-    private function set($input, $output)
+    private function set($input)
     {
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);
