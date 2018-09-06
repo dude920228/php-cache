@@ -11,9 +11,9 @@ class BucketFactory
 {
     public function __invoke(\Psr\Container\ContainerInterface $container)
     {
-        $bucket = new Bucket();
         $config = $container->getConfig();
         $backupDir = $config['backupDir'];
+        $bucket = new Bucket($backupDir);
         if (!file_exists($backupDir)) {
             return $bucket;
         }

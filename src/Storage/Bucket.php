@@ -10,21 +10,44 @@ namespace PhpCache\Storage;
 class Bucket implements StorageInterface
 {
     private $entries;
-
-    public function __construct()
+    private $backupDir;
+    
+    public function __construct($backupDir)
     {
+        $this->backupDir = $backupDir;
         $this->entries = [];
     }
 
     public function get($key)
     {
-        if (!array_key_exists($key, $this->entries)) {
+        if (!array_key_exists($key, $this->entries) && !$this->existsInBackup($key)) {
             return false;
         }
-
+        if($this->existsInBackup($key)) {
+            $entry = unserialize($this->getFromBackup($key));
+            return gzuncompress($entry['content']);
+        }
         return gzuncompress($this->entries[$key]['content']);
     }
-
+    
+    private function existsInBackup($key)
+    {
+        if(file_exists($this->backupDir."/".$key.".dat")) {
+            return true;
+        }
+        return false;
+    }
+    
+    private function getFromBackup($key)
+    {
+        $contents = "";
+        $handle = fopen($this->backupDir."/".$key.".dat", "r+");
+        while(!feof($handle)) {
+            $contents .= fread($handle, 32);
+        }
+        return $contents;
+    }
+    
     public function store($key, $entry, $time = null)
     {
         $compressed = gzcompress($entry, 9);
