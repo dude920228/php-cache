@@ -9,7 +9,6 @@ namespace PhpCache\Storage;
  */
 class Maintainer
 {
-
     private $ttl;
     private $lastBackupRun;
     private $backupDir;
@@ -88,9 +87,8 @@ class Maintainer
     private function backupToFile($bucket)
     {
         foreach ($bucket->getEntries() as $key => $entry) {
-            file_put_contents($this->backupDir . '/' . $key . '.dat',
+            file_put_contents($this->backupDir.'/'.$key.'.dat',
                     serialize($entry));
         }
     }
-
 }
