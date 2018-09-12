@@ -20,23 +20,23 @@ class ServiceManager implements ContainerInterface
     public function __construct($config)
     {
         $this->config = $config;
-        $this->configure($config);
+        $this->configure();
     }
 
-    private function configure($config)
+    private function configure()
     {
-        if (isset($config['aliases'])) {
-            $this->aliases = $config['aliases'];
+        if (isset($this->config['services']['aliases'])) {
+            $this->aliases = $this->config['services']['aliases'];
         } else {
             $this->aliases = [];
         }
-        if (isset($config['factories'])) {
-            $this->factories = $config['factories'];
+        if (isset($this->config['services']['factories'])) {
+            $this->factories = $this->config['services']['factories'];
         } else {
             $this->factories = [];
         }
-        if (isset($config['invokables'])) {
-            $this->invokables = $config['invokables'];
+        if (isset($this->config['services']['invokables'])) {
+            $this->invokables = $this->config['services']['invokables'];
         } else {
             $this->invokables = [];
         }
@@ -78,7 +78,7 @@ class ServiceManager implements ContainerInterface
 
     public function getConfig()
     {
-        return $this->config;
+        return $this->config['config'];
     }
 
     public function has($id)

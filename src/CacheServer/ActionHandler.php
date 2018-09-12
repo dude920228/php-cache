@@ -49,15 +49,6 @@ class ActionHandler
         return $success;
     }
 
-    private function handleKeys($data, $bucket, $ioHandler, $connection, $server)
-    {
-        $keys = $bucket->getKeys();
-        $dataToSend = serialize($keys);
-        $ioHandler->writeToSocket($connection, $dataToSend);
-
-        return true;
-    }
-
     private function handleGetEntries($data, $bucket, $ioHandler, $connection)
     {
         $entries = $bucket->getEntries();

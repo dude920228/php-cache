@@ -51,18 +51,6 @@ class CacheClient implements ClientInterface
         $this->ioHandler->closeSocket($socket);
     }
 
-    public function getKeys()
-    {
-        $data = ['action' => 'keys'];
-        $socket = $this->ioHandler->createClientSocket();
-        $dataString = serialize($data);
-        $this->ioHandler->writeToSocket($socket, $dataString);
-        $keys = $this->ioHandler->readFromSocket($socket);
-        $this->ioHandler->closeSocket($socket);
-
-        return unserialize($keys);
-    }
-
     public function quitServer()
     {
         $data = ['action' => 'quit'];
