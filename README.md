@@ -36,13 +36,15 @@ php testServer.php
 ```
 mv daemon.sh /etc/init.d/php-cache
 chmod +x /etc/init.d/php-cache
-# in this case you have to make the phar file globally executable because the daemon file will run it before stopping the service
+# in this case you have to make the phar file globally executable because the daemon file will run it before stopping the service  
+# create a directory called 'phar-build' -> copy the vendor and src folders to it -> copy the phpCache file to the directory -> run pharBuilder.php.
 mv php-cache.phar /usr/local/bin/php-cache
 chmod +x /usr/local/bin/php-cache
 # now you can use systemctl style service management
 sudo service php-cache start
 ```
-##### Note: you can modify the contents of `daemon.sh` if you want to use other directories
+##### Note 1: you can modify the contents of `daemon.sh` if you want to use other directories
+##### Note 2:  A `.phar` file is a php archive file, which packs a php application into one file. If the sources or the config changes, it needs to be rebuilt!
 #### Creating a new client instance
 ```
 <?php
