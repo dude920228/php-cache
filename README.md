@@ -68,4 +68,3 @@ php testClient.php
 `./php-cache.phar get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
 `./php-cache.phar set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
 `./php-cache.phar delete <key>` deletes the entry with with the given key  
-`./php-cache.phar keys` retrieves all keys in the cache pool
