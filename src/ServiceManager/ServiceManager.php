@@ -46,8 +46,9 @@ class ServiceManager implements ContainerInterface
     {
         if ($this->has($id)) {
             $serviceType = $this->getServiceType($id);
-            if($serviceType == 'alias') {
-                $service = $this->aliases[$id];;
+            if ($serviceType == 'alias') {
+                $service = $this->aliases[$id];
+
                 return $this->get($service);
             }
             if ($serviceType == 'factory') {

@@ -24,7 +24,7 @@ class ActionHandler
     {
         $package = $data['message'];
         $eventListener = $server->getCacheEventListener();
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onSet($data['key'], $package);
         }
         $success = $bucket->store($data['key'], $package);
@@ -40,7 +40,7 @@ class ActionHandler
             return false;
         }
         $eventListener = $server->getCacheEventListener();
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onGet($key, $package);
         }
         $dataToSend = serialize($package);
@@ -57,11 +57,11 @@ class ActionHandler
             return false;
         }
         $eventListener = $server->getCacheEventListener();
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onDelete($key, $package);
         }
         $success = $bucket->delete($key);
-        
+
         return $success;
     }
 

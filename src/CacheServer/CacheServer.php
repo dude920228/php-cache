@@ -37,7 +37,7 @@ class CacheServer implements CacheServerInterface
     private $maintainer;
 
     private $cacheEventListener;
-    
+
     private $clients;
 
     public function __construct(
@@ -85,7 +85,7 @@ class CacheServer implements CacheServerInterface
     {
         $this->ioHandler->closeSocket($this->socket);
     }
-    
+
     public function getCacheEventListener()
     {
         return $this->cacheEventListener;
