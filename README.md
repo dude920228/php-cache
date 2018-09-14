@@ -18,13 +18,19 @@ composer require kdudas/php-cache
 #### Creating a new server instance
 ```
 <?php
-include_once 'vendor/autoload.php';
+
+ini_set('log_errors', 1);
+ini_set('error_log', '/var/log/php-cache.log');
+require_once 'vendor/autoload.php';
 
 use PhpCache\CacheServer\CacheServer;
+use PhpCache\ServiceManager\ConfigAggregator;
 use PhpCache\ServiceManager\ServiceManager;
-
-$config = require_once 'config.php';
-$serviceManager = new ServiceManager($config);
+// You can import multiple config files to overwrite parameters in the basic config or add extra factories
+$config = include_once 'config.php';
+$configAggregator = new ConfigAggregator();
+$configAggregator->addConfig($config);
+$serviceManager = new ServiceManager($configAggregator->getMergedConfig());
 $server = $serviceManager->get(CacheServer::class);
 $server->run();
 ```
@@ -44,7 +50,52 @@ chmod +x /usr/local/bin/php-cache
 sudo service php-cache start
 ```
 ##### Note 1: you can modify the contents of `daemon.sh` if you want to use other directories
-##### Note 2:  A `.phar` file is a php archive file, which packs a php application into one file. If the sources or the config changes, it needs to be rebuilt!
+##### Note 2:  A `.phar` file is a php archive file, which packs a php application into one file. If the sources or the config changes, it needs to be rebuilt! 
+
+#### Adding Server Event Listeners:
+- Create a config file that looks like this: 
+```
+<?php
+use PhpCache\CacheServerInter;
+use Example\ExampleEventListener;
+use Example\ExampleEventListenerFactory;
+return [
+    'services' => [
+        'aliases' => [
+            'PhpCache\CacheEventListener\CacheEventListenerInterface::class' => Example\ExampleEventListener::class
+        ],
+        'factories' => [
+            'Example\ExampleEventListener::class' => ExampleEventListenerFactory::class
+        ]
+    ]
+]
+```
+- Create the event listener class:
+```
+    <?php
+    namespace Example;
+    use PhpCache\CacheEventListener\CacheEventListenerInterface;
+    
+    class ExampleEventListener implements CacheEventListenerInterface
+    {
+        //implement the abstract methods, add custom constructor with extra services (like db adapter, logger, etc...)
+    }
+```
+- Create the factory for the event listener class:
+```
+<?php
+namespace Example;
+
+class ExampleEventListenerFactory
+{
+    public function __invoke($container)
+    {
+        //Get the extra service you want from the container here and add add them to the constructor call
+        return new ExampleEventListener();
+    }
+}
+```
+
 #### Creating a new client instance
 ```
 <?php
