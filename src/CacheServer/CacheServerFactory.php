@@ -2,6 +2,7 @@
 
 namespace PhpCache\CacheServer;
 
+use PhpCache\CacheEventListener\CacheEventListenerInterface;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\Storage\Bucket;
 use PhpCache\Storage\Maintainer;
@@ -21,7 +22,10 @@ class CacheServerFactory
         $bucket = $container->get(Bucket::class);
         $actionHandler = $container->get(ActionHandler::class);
         $maintainer = $container->get(Maintainer::class);
-
-        return new CacheServer($ioHandler, $bucket, $actionHandler, $maintainer);
+        $eventListener = false;
+        if($container->has(CacheEventListenerInterface::class)) {
+            $eventListener = $container->get(CacheEventListenerInterface::class);
+        }
+        return new CacheServer($ioHandler, $bucket, $actionHandler, $maintainer, $eventListener);
     }
 }

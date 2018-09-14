@@ -3,7 +3,6 @@
 
 use PhpCache\Commands\DeleteCommand;
 use PhpCache\Commands\GetCommand;
-use PhpCache\Commands\GetKeysCommand;
 use PhpCache\Commands\QuitCommand;
 use PhpCache\Commands\SetCommand;
 use Symfony\Component\Console\Application;

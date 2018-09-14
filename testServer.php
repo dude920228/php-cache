@@ -8,6 +8,8 @@ use PhpCache\CacheServer\CacheServer;
 use PhpCache\ServiceManager\ServiceManager;
 
 $config = include_once 'config.php';
-$serviceManager = new ServiceManager($config);
+$configAggregator = new \PhpCache\ServiceManager\ConfigAggregator();
+$configAggregator->addConfig($config);
+$serviceManager = new ServiceManager($configAggregator->getMergedConfig());
 $server = $serviceManager->get(CacheServer::class);
 $server->run();

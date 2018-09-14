@@ -23,6 +23,9 @@ return [
         'backupDir' => __DIR__ . '/.backup',
     ],
     'services' => [
+        'aliases' => [
+            
+        ],
         'factories' => [
             CacheServer::class => CacheServerFactory::class,
             CacheIOHandler::class => CacheIOHandlerFactory::class,

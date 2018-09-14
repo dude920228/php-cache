@@ -23,6 +23,10 @@ class ActionHandler
     private function handleSet($data, $bucket, $ioHandler, $connection, $server)
     {
         $package = $data['message'];
+        $eventListener = $server->getCacheEventListener();
+        if($eventListener) {
+            $package = $eventListener->onSet($key, $package);
+        }
         $success = $bucket->store($data['key'], $package);
 
         return $success;
@@ -35,6 +39,10 @@ class ActionHandler
         if ($package === false) {
             return false;
         }
+        $eventListener = $server->getCacheEventListener();
+        if($eventListener) {
+            $package = $eventListener->onGet($key, $package);
+        }
         $dataToSend = serialize($package);
         $ioHandler->writeToSocket($connection, $dataToSend);
 
@@ -45,7 +53,10 @@ class ActionHandler
     {
         $key = $data['key'];
         $success = $bucket->delete($key);
-
+        $eventListener = $server->getCacheEventListener();
+        if($eventListener) {
+           $eventListener->onDelete($key, $package);
+        }
         return $success;
     }
 
