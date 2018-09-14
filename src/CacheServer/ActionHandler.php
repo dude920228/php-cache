@@ -25,7 +25,7 @@ class ActionHandler
         $package = $data['message'];
         $eventListener = $server->getCacheEventListener();
         if($eventListener) {
-            $package = $eventListener->onSet($key, $package);
+            $package = $eventListener->onSet($data['key'], $package);
         }
         $success = $bucket->store($data['key'], $package);
 
@@ -52,11 +52,16 @@ class ActionHandler
     private function handleDelete($data, $bucket, $ioHandler, $connection, $server)
     {
         $key = $data['key'];
-        $success = $bucket->delete($key);
+        $package = $bucket->get($key);
+        if ($package === false) {
+            return false;
+        }
         $eventListener = $server->getCacheEventListener();
         if($eventListener) {
-           $eventListener->onDelete($key, $package);
+            $package = $eventListener->onDelete($key, $package);
         }
+        $success = $bucket->delete($key);
+        
         return $success;
     }
 

@@ -46,6 +46,10 @@ class ServiceManager implements ContainerInterface
     {
         if ($this->has($id)) {
             $serviceType = $this->getServiceType($id);
+            if($serviceType == 'alias') {
+                $service = $this->aliases[$id];;
+                return $this->get($service);
+            }
             if ($serviceType == 'factory') {
                 return (new $this->factories[$id]())($this);
             }
@@ -62,18 +66,10 @@ class ServiceManager implements ContainerInterface
     private function getServiceType($id)
     {
         if (array_key_exists($id, $this->aliases)) {
-            $serviceName = $this->getServiceForAlias($id);
-
-            return $this->getServiceType($serviceName);
+            return 'alias';
         }
 
         return array_key_exists($id, $this->factories) ? 'factory' : 'invokable';
-    }
-
-    private function getServiceForAlias($alias)
-    {
-        return array_key_exists($this->aliases[$alias], $this->factories) ?
-                $this->factories[$this->aliases[$alias]] : $this->invokables[$this->aliases[$alias]];
     }
 
     public function getConfig()

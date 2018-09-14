@@ -49,6 +49,7 @@ class CacheServer implements CacheServerInterface
         $this->actionHandler = $actionHandler;
         $this->maintainer = $maintainer;
         $this->clients = [];
+        $this->cacheEventListener = $cacheEventListener;
     }
 
     public function run()
