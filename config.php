@@ -24,7 +24,7 @@ return [
     ],
     'services' => [
         'aliases' => [
-            
+
         ],
         'factories' => [
             CacheServer::class    => CacheServerFactory::class,
