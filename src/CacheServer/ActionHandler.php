@@ -9,21 +9,42 @@ namespace PhpCache\CacheServer;
  */
 class ActionHandler
 {
-    public function __invoke($data, $bucket, $ioHandler, $connection, $server)
-    {
+    public function __invoke(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
         if (!method_exists($this, $functionName)) {
             return false;
         }
 
-        return call_user_func_array([$this, $functionName], [$data, $bucket, $ioHandler, $connection, $server]);
+        return call_user_func_array([$this, $functionName], [
+            $data,
+            $bucket,
+            $ioHandler,
+            $connection,
+            $eventListener,
+            $maintainer,
+            $serverSocket
+        ]);
     }
 
-    private function handleSet($data, $bucket, $ioHandler, $connection, $server)
-    {
+    private function handleSet(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
         $package = $data['message'];
-        $eventListener = $server->getCacheEventListener();
         if($eventListener) {
             $package = $eventListener->onSet($data['key'], $package);
         }
@@ -32,14 +53,20 @@ class ActionHandler
         return $success;
     }
 
-    private function handleGet($data, $bucket, $ioHandler, $connection, $server)
-    {
+    private function handleGet(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
         $key = $data['key'];
         $package = $bucket->get($key);
         if ($package === false) {
             return false;
         }
-        $eventListener = $server->getCacheEventListener();
         if($eventListener) {
             $package = $eventListener->onGet($key, $package);
         }
@@ -49,14 +76,20 @@ class ActionHandler
         return true;
     }
 
-    private function handleDelete($data, $bucket, $ioHandler, $connection, $server)
-    {
+    private function handleDelete(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
         $key = $data['key'];
         $package = $bucket->get($key);
         if ($package === false) {
             return false;
         }
-        $eventListener = $server->getCacheEventListener();
         if($eventListener) {
             $package = $eventListener->onDelete($key, $package);
         }
@@ -65,8 +98,15 @@ class ActionHandler
         return $success;
     }
 
-    private function handleGetEntries($data, $bucket, $ioHandler, $connection)
-    {
+    private function handleGetEntries(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
         $entries = $bucket->getEntries();
         $entriesFormatted = [];
         foreach ($entries as $key => $value) {
@@ -78,8 +118,16 @@ class ActionHandler
         return true;
     }
 
-    private function handleQuit($data, $bucket, $ioHandler, $connection, $server)
-    {
-        $server->beforeServiceStop();
+    private function handleQuit(
+        $data,
+        $bucket,
+        $ioHandler,
+        $connection,
+        $eventListener,
+        $maintainer,
+        $serverSocket
+    ) {
+        $ioHandler->closeSocket($serverSocket);
+        $maintainer->backup($bucket);
     }
 }
