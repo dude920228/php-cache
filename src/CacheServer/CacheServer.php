@@ -37,7 +37,7 @@ class CacheServer implements CacheServerInterface
     private $maintainer;
 
     private $cacheEventListener;
-    
+
     private $clients;
 
     public function __construct(

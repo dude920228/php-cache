@@ -94,7 +94,7 @@ class ActionHandler
             $package = $eventListener->onDelete($key, $package);
         }
         $success = $bucket->delete($key);
-        
+
         return $success;
     }
 
