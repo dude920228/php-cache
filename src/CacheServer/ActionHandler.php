@@ -31,7 +31,7 @@ class ActionHandler
             $connection,
             $eventListener,
             $maintainer,
-            $serverSocket
+            $serverSocket,
         ]);
     }
 
@@ -45,7 +45,7 @@ class ActionHandler
         $serverSocket
     ) {
         $package = $data['message'];
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onSet($data['key'], $package);
         }
         $success = $bucket->store($data['key'], $package);
@@ -67,7 +67,7 @@ class ActionHandler
         if ($package === false) {
             return false;
         }
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onGet($key, $package);
         }
         $dataToSend = serialize($package);
@@ -90,7 +90,7 @@ class ActionHandler
         if ($package === false) {
             return false;
         }
-        if($eventListener) {
+        if ($eventListener) {
             $package = $eventListener->onDelete($key, $package);
         }
         $success = $bucket->delete($key);
