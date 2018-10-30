@@ -9,7 +9,7 @@ use PhpCache\IO\CacheIOHandler;
  *
  * @author dude920228
  */
-class CacheClient implements ClientInterface
+class CacheClient implements CacheClientInterface
 {
     /**
      * @var CacheIOHandler
