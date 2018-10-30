@@ -13,12 +13,12 @@ class CacheIOHandler
 {
     const SOCKET_TYPE_IP = 'ip';
     const SOCKET_TYPE_FILE = 'file';
-    
+
     private $location;
     private $serverPort;
     private $bufferLength;
     private $socketType;
-    
+
     public function __construct($location, $serverPort, $bufferLength, $socketType)
     {
         $this->location = $location;
@@ -37,7 +37,7 @@ class CacheIOHandler
     public function createServerSocket()
     {
         $socketType = AF_INET;
-        if($this->socketType == self::SOCKET_TYPE_FILE) {
+        if ($this->socketType == self::SOCKET_TYPE_FILE) {
             $socketType = AF_UNIX;
         }
         $socket = socket_create($socketType, SOCK_STREAM, 0);
@@ -64,7 +64,7 @@ class CacheIOHandler
     public function createClientSocket()
     {
         $socketType = AF_INET;
-        if($this->socketType == self::SOCKET_TYPE_FILE) {
+        if ($this->socketType == self::SOCKET_TYPE_FILE) {
             $socketType = AF_UNIX;
         }
         $socket = socket_create($socketType, SOCK_STREAM, 0);
@@ -105,14 +105,14 @@ class CacheIOHandler
     {
         socket_close($socket);
     }
-    
+
     public function removeSocketFile()
     {
-        if($this->socketType == self::SOCKET_TYPE_FILE) {
+        if ($this->socketType == self::SOCKET_TYPE_FILE) {
             unlink($this->location);
         }
     }
-    
+
     public function getServerIp()
     {
         return $this->location;

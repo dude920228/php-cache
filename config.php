@@ -14,14 +14,14 @@ use PhpCache\Storage\MaintainerFactory;
 
 return [
     'config' => [
-        'memoryLimit' => 1024,
+        'memoryLimit'       => 1024,
         'location'          => __DIR__.'/temp/php-cache.sock',
-        'port'        => 9000,
-        'bufferSize'  => 256,
-        'ttl'         => 3600,
-        'backupTime'  => 1800,
-        'backupDir'   => __DIR__.'/.backup',
-        'socketType' => CacheIOHandler::SOCKET_TYPE_FILE,
+        'port'              => 9000,
+        'bufferSize'        => 256,
+        'ttl'               => 3600,
+        'backupTime'        => 1800,
+        'backupDir'         => __DIR__.'/.backup',
+        'socketType'        => CacheIOHandler::SOCKET_TYPE_FILE,
     ],
     'services' => [
         'aliases' => [
