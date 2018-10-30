@@ -47,19 +47,19 @@ sudo service php-cache start
 ```
 ##### Note: you can modify the contents of `daemon.sh` if you want to use other directories
 #### Configuration array:
-- `config`: Basic configuration array
--- `memoryLimit`: as the name suggests, after we exceed the limit, our data in the cache pool gets backed up to file system
--- `location`: server IP address or socket file location (string)
--- `port`: the port to run the sockets on (number)
--- `bufferSize`: how big chunks of data is being read from a stream (bytes)
--- `ttl`: time to live; how long an entry should take space up in the cache pool before being deleted (seconds)
--- `backupTime`: schedule backups (seconds)
--- `backupDir`: where to store backed up data? A backup is made when we are shutting down the server service, when the scheduled backup occures or our cache pool exceeded it's memory limit
--- `socketType`: which socket type should we use? Open a port on the network for the socket or create a file for the socket. Values must be either `file` (`CacheIOHandler::SOCKET_TYPE_FILE`) or `ip` (`CacheIOHandler::SOCKET_TYPE_IP`)
-- `services`: service manager configuration
--- `aliases`: a name assigned for a real service (Example: `'cache-server' => CacheServer::class`)
--- `factories`: service name with factory name for service pairs
--- `invokables`: services with no dependencies
+- `config`: Basic configuration array  
+-- `memoryLimit`: as the name suggests, after we exceed the limit, our data in the cache pool gets backed up to file system  
+-- `location`: server IP address or socket file location (string)  
+-- `port`: the port to run the sockets on (number)  
+-- `bufferSize`: how big chunks of data is being read from a stream (bytes)  
+-- `ttl`: time to live; how long an entry should take space up in the cache pool before being deleted (seconds)  
+-- `backupTime`: schedule backups (seconds)  
+-- `backupDir`: where to store backed up data? A backup is made when we are shutting down the server service, when the scheduled backup occures or our cache pool exceeded it's memory limit  
+-- `socketType`: which socket type should we use? Open a port on the network for the socket or create a file for the socket. Values must be either `file` (`CacheIOHandler::SOCKET_TYPE_FILE`) or `ip` (`CacheIOHandler::SOCKET_TYPE_IP`)  
+- `services`: service manager configuration  
+-- `aliases`: a name assigned for a real service (Example: `'cache-server' => CacheServer::class`)  
+-- `factories`: service name with factory name for service pairs  
+-- `invokables`: services with no dependencies  
 #### Adding Server Event Listeners:
 - Create a config file that looks like this: 
 ```
