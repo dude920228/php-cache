@@ -26,7 +26,7 @@ require_once 'vendor/autoload.php';
 use PhpCache\CacheServer\CacheServer;
 use PhpCache\ServiceManager\ConfigAggregator;
 use PhpCache\ServiceManager\ServiceManager;
-// You can import multiple config files to overwrite parameters in the basic config or add extra factories
+// You can import multiple config files to overwrite parameters in the basic config or add extra parameters, including dependency injection
 $config = include_once 'config.php';
 $configAggregator = new ConfigAggregator();
 $configAggregator->addConfig($config);
@@ -42,16 +42,24 @@ php testServer.php
 ```
 mv daemon.sh /etc/init.d/php-cache
 chmod +x /etc/init.d/php-cache
-# in this case you have to make the phar file globally executable because the daemon file will run it before stopping the service  
-# create a directory called 'phar-build' -> copy the vendor and src folders to it -> copy the phpCache file to the directory -> run pharBuilder.php.
-mv php-cache.phar /usr/local/bin/php-cache
-chmod +x /usr/local/bin/php-cache
 # now you can use systemctl style service management
 sudo service php-cache start
 ```
-##### Note 1: you can modify the contents of `daemon.sh` if you want to use other directories
-##### Note 2:  A `.phar` file is a php archive file, which packs a php application into one file. If the sources or the config changes, it needs to be rebuilt! 
-
+##### Note: you can modify the contents of `daemon.sh` if you want to use other directories
+#### Configuration array:
+- `config`: Basic configuration array
+-- `memoryLimit`: as the name suggests, after we exceed the limit, our data in the cache pool gets backed up to file system
+-- `location`: server IP address or socket file location (string)
+-- `port`: the port to run the sockets on (number)
+-- `bufferSize`: how big chunks of data is being read from a stream (bytes)
+-- `ttl`: time to live; how long an entry should take space up in the cache pool before being deleted (seconds)
+-- `backupTime`: schedule backups (seconds)
+-- `backupDir`: where to store backed up data? A backup is made when we are shutting down the server service, when the scheduled backup occures or our cache pool exceeded it's memory limit
+-- `socketType`: which socket type should we use? Open a port on the network for the socket or create a file for the socket. Values must be either `file` (`CacheIOHandler::SOCKET_TYPE_FILE`) or `ip` (`CacheIOHandler::SOCKET_TYPE_IP`)
+- `services`: service manager configuration
+-- `aliases`: a name assigned for a real service (Example: `'cache-server' => CacheServer::class`)
+-- `factories`: service name with factory name for service pairs
+-- `invokables`: services with no dependencies
 #### Adding Server Event Listeners:
 - Create a config file that looks like this: 
 ```
@@ -116,6 +124,6 @@ echo $client->get('test');
 php testClient.php
 ```
 #### CLI Commands:
-`./php-cache.phar get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
-`./php-cache.phar set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
-`./php-cache.phar delete <key>` deletes the entry with with the given key  
+`./phpCache get <key>` gets entries for the specified key. If no key is specified, it returns all entries.  
+`./phpCache set <key> <value>` pushes an entry to the cache pool with the given key - value pair.  
+`./phpCache delete <key>` deletes the entry with the given key
