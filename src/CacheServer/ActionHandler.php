@@ -128,6 +128,7 @@ class ActionHandler
         $serverSocket
     ) {
         $ioHandler->closeSocket($serverSocket);
+        $ioHandler->removeSocketFile();
         $maintainer->backup($bucket);
     }
 }

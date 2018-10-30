@@ -11,15 +11,20 @@ use PhpCache\IO\Exception\IOException;
  */
 class CacheIOHandler
 {
-    private $serverIp;
+    const SOCKET_TYPE_IP = 'ip';
+    const SOCKET_TYPE_FILE = 'file';
+    
+    private $location;
     private $serverPort;
     private $bufferLength;
-
-    public function __construct($serverIp, $serverPort, $bufferLength)
+    private $socketType;
+    
+    public function __construct($location, $serverPort, $bufferLength, $socketType)
     {
-        $this->serverIp = $serverIp;
+        $this->location = $location;
         $this->serverPort = $serverPort;
         $this->bufferLength = $bufferLength;
+        $this->socketType = $socketType;
     }
 
     public function writeToSocket($socket, $dataString)
@@ -31,9 +36,13 @@ class CacheIOHandler
 
     public function createServerSocket()
     {
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        $socketType = AF_INET;
+        if($this->socketType == self::SOCKET_TYPE_FILE) {
+            $socketType = AF_UNIX;
+        }
+        $socket = socket_create($socketType, SOCK_STREAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
-        $bindResult = socket_bind($socket, $this->serverIp, $this->serverPort);
+        $bindResult = socket_bind($socket, $this->location, $this->serverPort);
         if (!$bindResult) {
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
@@ -41,7 +50,7 @@ class CacheIOHandler
             throw new IOException(
                 sprintf(
                     "Couldn't create server socket on ip: %s, port: %d. Reason: %s",
-                    $this->serverIp,
+                    $this->location,
                     $this->serverPort,
                     $errorMsg
                 )
@@ -54,10 +63,14 @@ class CacheIOHandler
 
     public function createClientSocket()
     {
-        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        $socketType = AF_INET;
+        if($this->socketType == self::SOCKET_TYPE_FILE) {
+            $socketType = AF_UNIX;
+        }
+        $socket = socket_create($socketType, SOCK_STREAM, 0);
         $connectionResult = socket_connect(
             $socket,
-            $this->serverIp,
+            $this->location,
             $this->serverPort
         );
         if (!$connectionResult) {
@@ -67,7 +80,7 @@ class CacheIOHandler
             throw new IOException(
                 sprintf(
                     "Couldn't connect to server socket on ip: %s, port: %d. Reason: %s",
-                    $this->serverIp,
+                    $this->location,
                     $this->serverPort,
                     $errorMsg
                 )
@@ -92,10 +105,17 @@ class CacheIOHandler
     {
         socket_close($socket);
     }
-
+    
+    public function removeSocketFile()
+    {
+        if($this->socketType == self::SOCKET_TYPE_FILE) {
+            unlink($this->location);
+        }
+    }
+    
     public function getServerIp()
     {
-        return $this->serverIp;
+        return $this->location;
     }
 
     public function getServerPort()

@@ -14,7 +14,7 @@ class CacheIOHandlerFactory
     public function __invoke(ContainerInterface $container)
     {
         $config = $container->getConfig();
-        $ioHandler = new CacheIOHandler($config['ip'], $config['port'], $config['bufferSize']);
+        $ioHandler = new CacheIOHandler($config['location'], $config['port'], $config['bufferSize'], $config['socketType']);
 
         return $ioHandler;
     }

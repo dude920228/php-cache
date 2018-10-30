@@ -16,7 +16,7 @@ NAME=php-cache
 DESC="Daemon for PHP Cache Server"
 PIDFILE="/var/run/${NAME}.pid"
 LOGFILE="/var/log/${NAME}.log"
-PHARFILE="/usr/local/bin/php-cache";
+EXECUTABLE="/var/www/php-cache/phpCache";
 DAEMON="/usr/bin/php"
 DAEMON_OPTS="/var/www/php-cache/testServer.php"
 
@@ -35,13 +35,14 @@ case "$1" in
         ;;
     stop)
         echo -n "Stopping $DESC: "
-	/usr/bin/php ${PHARFILE} quit
+	/usr/bin/php ${EXECUTABLE} quit
         start-stop-daemon $STOP_OPTS
         echo "$NAME."
         rm -f $PIDFILE
         ;;
     restart|force-reload)
         echo -n "Restarting $DESC: "
+        /usr/bin/php ${EXECUTABLE} quit
         start-stop-daemon $STOP_OPTS
         sleep 1
         start-stop-daemon $START_OPTS >> $LOGFILE

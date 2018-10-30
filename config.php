@@ -14,13 +14,14 @@ use PhpCache\Storage\MaintainerFactory;
 
 return [
     'config' => [
-        'memoryLimit' => 1024, //To be used in future feature: Backing up data to file, after Bucket size exceeds memory limit
-        'ip'          => '0.0.0.0',
+        'memoryLimit' => 1024,
+        'location'          => __DIR__.'/temp/php-cache.sock',
         'port'        => 9000,
         'bufferSize'  => 256,
-        'ttl'         => 3600, // Time To Live -> defines how many seconds the cache should persist an entry (Default 3600)
-        'backupTime'  => 1800, // Creates a file storage backup every $backupTime seconds
+        'ttl'         => 3600,
+        'backupTime'  => 1800,
         'backupDir'   => __DIR__.'/.backup',
+        'socketType' => CacheIOHandler::SOCKET_TYPE_FILE,
     ],
     'services' => [
         'aliases' => [
