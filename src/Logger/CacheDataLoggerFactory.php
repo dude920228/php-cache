@@ -6,10 +6,8 @@
 
 namespace PhpCache\Logger;
 
-use Psr\Container\ContainerInterface;
-
 /**
- * Description of CacheDataLoggerFactory
+ * Description of CacheDataLoggerFactory.
  *
  * @author kdudas
  */
@@ -18,7 +16,7 @@ class CacheDataLoggerFactory
     public function __invoke($container)
     {
         $config = $container->getConfig();
-        
+
         return new CacheDataLogger($config['logFilePath']);
     }
 }
