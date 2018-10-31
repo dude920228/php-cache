@@ -2,15 +2,11 @@
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\CacheClient\CacheClientFactory;
-use PhpCache\CacheEventListener\CacheEventListener;
-use PhpCache\CacheEventListener\CacheEventListenerFactory;
 use PhpCache\CacheServer\ActionHandler;
 use PhpCache\CacheServer\CacheServer;
 use PhpCache\CacheServer\CacheServerFactory;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\IO\CacheIOHandlerFactory;
-use PhpCache\Logger\CacheDataLogger;
-use PhpCache\Logger\CacheDataLoggerFactory;
 use PhpCache\Storage\Bucket;
 use PhpCache\Storage\BucketFactory;
 use PhpCache\Storage\Maintainer;
@@ -34,8 +30,6 @@ return [
             CacheClient::class        => CacheClientFactory::class,
             Maintainer::class         => MaintainerFactory::class,
             Bucket::class             => BucketFactory::class,
-            CacheEventListener::class => CacheEventListenerFactory::class,
-            CacheDataLogger::class    => CacheDataLoggerFactory::class,
         ],
         'invokables' => [
             ActionHandler::class => ActionHandler::class,
