@@ -7,16 +7,16 @@ use PhpCache\Example\Logger\CacheDataLoggerFactory;
 
 return [
     'config' => [
-        'logFilePath' => __DIR__.'/log/example.log'
+        'logFilePath' => __DIR__.'/log/example.log',
     ],
     'services' => [
         'aliases' => [
-            CacheEventListenerInterface::class => CacheEventListener::class
+            CacheEventListenerInterface::class => CacheEventListener::class,
         ],
         'factories' => [
-            CacheDataLogger::class => CacheDataLoggerFactory::class,
-            CacheEventListener::class => \PhpCache\Example\EventListener\CacheEventListenerFactory::class
-        ]
-        
-    ]
+            CacheDataLogger::class    => CacheDataLoggerFactory::class,
+            CacheEventListener::class => \PhpCache\Example\EventListener\CacheEventListenerFactory::class,
+        ],
+
+    ],
 ];

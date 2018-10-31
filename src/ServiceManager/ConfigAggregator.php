@@ -34,6 +34,7 @@ class ConfigAggregator
         foreach ($this->configs as $config) {
             $this->mergedConfig = array_merge_recursive($this->mergedConfig, $config);
         }
+
         return $this->mergedConfig;
     }
 }

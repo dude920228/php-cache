@@ -4,7 +4,6 @@ use PhpCache\CacheClient\CacheClient;
 use PhpCache\CacheClient\CacheClientFactory;
 use PhpCache\CacheEventListener\CacheEventListener;
 use PhpCache\CacheEventListener\CacheEventListenerFactory;
-use PhpCache\CacheEventListener\CacheEventListenerInterface;
 use PhpCache\CacheServer\ActionHandler;
 use PhpCache\CacheServer\CacheServer;
 use PhpCache\CacheServer\CacheServerFactory;
