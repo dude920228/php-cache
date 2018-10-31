@@ -13,8 +13,8 @@ composer require kdudas/php-cache
 #### Supperted data types:
 - String
 - Integer/Float/Double
-- Array (serialized)
-- Objects (serialized)
+- Array
+- Objects
 #### Creating a new server instance
 ```
 <?php
@@ -60,49 +60,6 @@ sudo service php-cache start
 -- `aliases`: a name assigned for a real service (Example: `'cache-server' => CacheServer::class`)  
 -- `factories`: service name with factory name for service pairs  
 -- `invokables`: services with no dependencies  
-#### Adding Server Event Listeners:
-- Create a config file that looks like this: 
-```
-<?php
-use PhpCache\CacheServerInter;
-use Example\ExampleEventListener;
-use Example\ExampleEventListenerFactory;
-return [
-    'services' => [
-        'aliases' => [
-            'PhpCache\CacheEventListener\CacheEventListenerInterface::class' => Example\ExampleEventListener::class
-        ],
-        'factories' => [
-            'Example\ExampleEventListener::class' => ExampleEventListenerFactory::class
-        ]
-    ]
-]
-```
-- Create the event listener class:
-```
-    <?php
-    namespace Example;
-    use PhpCache\CacheEventListener\CacheEventListenerInterface;
-    
-    class ExampleEventListener implements CacheEventListenerInterface
-    {
-        //implement the abstract methods, add custom constructor with extra services (like db adapter, logger, etc...)
-    }
-```
-- Create the factory for the event listener class:
-```
-<?php
-namespace Example;
-
-class ExampleEventListenerFactory
-{
-    public function __invoke($container)
-    {
-        //Get the extra service you want from the container here and add add them to the constructor call
-        return new ExampleEventListener();
-    }
-}
-```
 
 #### Creating a new client instance
 ```
