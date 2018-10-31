@@ -1,12 +1,12 @@
 <?php
 
+namespace PhpCache\Example\Logger;
+
 /*
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpCache\Logger;
-
-use Psr\Container\ContainerInterface;
+use PhpCache\Example\Logger\CacheDataLogger;
 
 /**
  * Description of CacheDataLoggerFactory

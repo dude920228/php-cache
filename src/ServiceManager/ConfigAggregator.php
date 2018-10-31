@@ -32,9 +32,8 @@ class ConfigAggregator
     public function getMergedConfig()
     {
         foreach ($this->configs as $config) {
-            $this->mergedConfig = array_merge($this->mergedConfig, $config);
+            $this->mergedConfig = array_merge_recursive($this->mergedConfig, $config);
         }
-
         return $this->mergedConfig;
     }
 }

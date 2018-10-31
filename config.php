@@ -27,12 +27,8 @@ return [
         'backupTime'        => 1800,
         'backupDir'         => __DIR__.'/.backup',
         'socketType'        => CacheIOHandler::SOCKET_TYPE_FILE,
-        'logFilePath'       => '/var/www/php-cache/temp/log/php-cache.log',
     ],
     'services' => [
-        'aliases' => [
-            CacheEventListenerInterface::class => CacheEventListener::class
-        ],
         'factories' => [
             CacheServer::class    => CacheServerFactory::class,
             CacheIOHandler::class => CacheIOHandlerFactory::class,

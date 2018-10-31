@@ -5,3 +5,4 @@ temp/
 phar-build/
 memdump.json
 stress_test_parallel.php
+example/log

@@ -4,11 +4,12 @@
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpCache\CacheEventListener;
+namespace PhpCache\Example\EventListener;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use PhpCache\Logger\LogEntry;
+use PhpCache\CacheEventListener\CacheEventListenerInterface;
+use PhpCache\Example\Logger\LogEntry;
 
 /**
  * Description of CacheEventListener

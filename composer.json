@@ -18,7 +18,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpCache\\":"src/"
+            "PhpCache\\":"src/",
+            "PhpCache\\Example\\":"example/"
         }
     },
     "autoload-dev": {

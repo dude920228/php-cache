@@ -4,7 +4,7 @@
  * All rights reserved © 2018 Legow Hosting Kft.
  */
 
-namespace PhpCache\Logger;
+namespace PhpCache\Example\Logger;
 
 /**
  * Description of CacheDataLogger
