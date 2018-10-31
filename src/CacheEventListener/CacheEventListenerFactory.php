@@ -7,7 +7,7 @@
 namespace PhpCache\CacheEventListener;
 
 /**
- * Description of CacheEventListenerFactory
+ * Description of CacheEventListenerFactory.
  *
  * @author kdudas
  */
@@ -16,7 +16,7 @@ class CacheEventListenerFactory
     public function __invoke($container)
     {
         $logger = $container->get(\PhpCache\Logger\CacheDataLogger::class);
-        
+
         return new CacheEventListener($logger);
     }
 }

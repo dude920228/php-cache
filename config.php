@@ -31,16 +31,16 @@ return [
     ],
     'services' => [
         'aliases' => [
-            CacheEventListenerInterface::class => CacheEventListener::class
+            CacheEventListenerInterface::class => CacheEventListener::class,
         ],
         'factories' => [
-            CacheServer::class    => CacheServerFactory::class,
-            CacheIOHandler::class => CacheIOHandlerFactory::class,
-            CacheClient::class    => CacheClientFactory::class,
-            Maintainer::class     => MaintainerFactory::class,
-            Bucket::class         => BucketFactory::class,
+            CacheServer::class        => CacheServerFactory::class,
+            CacheIOHandler::class     => CacheIOHandlerFactory::class,
+            CacheClient::class        => CacheClientFactory::class,
+            Maintainer::class         => MaintainerFactory::class,
+            Bucket::class             => BucketFactory::class,
             CacheEventListener::class => CacheEventListenerFactory::class,
-            CacheDataLogger::class => CacheDataLoggerFactory::class
+            CacheDataLogger::class    => CacheDataLoggerFactory::class,
         ],
         'invokables' => [
             ActionHandler::class => ActionHandler::class,

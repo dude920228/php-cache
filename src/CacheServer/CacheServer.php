@@ -78,37 +78,37 @@ class CacheServer implements CacheServerInterface
             }
         }
     }
-    
+
     public function getBucket()
     {
         return $this->bucket;
     }
-    
+
     public function getIOHandler()
     {
         return $this->ioHandler;
     }
-    
+
     public function getCacheEventListener()
     {
         return $this->cacheEventListener;
     }
-    
+
     public function getMaintainer()
     {
         return $this->maintainer;
     }
-    
+
     public function getSocket()
     {
         return $this->socket;
     }
-    
+
     public function getEventListener()
     {
         return $this->cacheEventListener;
     }
-    
+
     public function close()
     {
         $this->maintainer->backup($this->bucket);
