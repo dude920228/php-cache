@@ -23,7 +23,7 @@ class ActionHandler
         return call_user_func_array([$this, $functionName], [
             $server,
             $data,
-            $connection
+            $connection,
         ]);
     }
 

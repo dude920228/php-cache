@@ -11,7 +11,7 @@ use PhpCache\Example\Logger\CacheDataLogger;
 
 
 /**
- * Description of CacheEventListenerFactory
+ * Description of CacheEventListenerFactory.
  *
  * @author kdudas
  */

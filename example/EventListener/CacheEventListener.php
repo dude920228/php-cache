@@ -12,19 +12,19 @@ use PhpCache\CacheEventListener\CacheEventListenerInterface;
 use PhpCache\Example\Logger\LogEntry;
 
 /**
- * Description of CacheEventListener
+ * Description of CacheEventListener.
  *
  * @author kdudas
  */
 class CacheEventListener implements CacheEventListenerInterface
 {
     private $logger;
-    
+
     public function __construct($logger)
     {
         $this->logger = $logger;
     }
-    
+
     public function onDelete($key, $entry)
     {
         $logEntry = new LogEntry(
@@ -32,9 +32,9 @@ class CacheEventListener implements CacheEventListenerInterface
             LogEntry::SEVERITY_INFO,
             'Cache Entry with key '.$key.' deleted'
         );
-        
+
         $this->logger->log($logEntry);
-        
+
         return $entry;
     }
 
@@ -45,9 +45,9 @@ class CacheEventListener implements CacheEventListenerInterface
             LogEntry::SEVERITY_INFO,
             'Cache Entry with key '.$key.' requested'
         );
-        
+
         $this->logger->log($logEntry);
-        
+
         return $entry;
     }
 
@@ -58,10 +58,9 @@ class CacheEventListener implements CacheEventListenerInterface
             LogEntry::SEVERITY_INFO,
             'Cache Entry with key '.$key.' was set into cache pool'
         );
-        
+
         $this->logger->log($logEntry);
-        
+
         return $entry;
     }
-
 }
