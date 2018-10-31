@@ -10,13 +10,9 @@ namespace PhpCache\CacheServer;
 class ActionHandler
 {
     public function __invoke(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
@@ -25,110 +21,84 @@ class ActionHandler
         }
 
         return call_user_func_array([$this, $functionName], [
+            $server,
             $data,
-            $bucket,
-            $ioHandler,
-            $connection,
-            $eventListener,
-            $maintainer,
-            $serverSocket,
+            $connection
         ]);
     }
 
     private function handleSet(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
         $package = $data['message'];
-        if ($eventListener) {
-            $package = $eventListener->onSet($data['key'], $package);
+        if ($server->getEventListener()) {
+            $package = $server->getEventListener()->onSet($data['key'], $package);
         }
-        $success = $bucket->store($data['key'], $package);
+        $success = $server->getBucket()->store($data['key'], $package);
 
         return $success;
     }
 
     private function handleGet(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
         $key = $data['key'];
-        $package = $bucket->get($key);
+        $package = $server->getBucket()->get($key);
         if ($package === false) {
             return false;
         }
-        if ($eventListener) {
-            $package = $eventListener->onGet($key, $package);
+        if ($server->getEventListener()) {
+            $package = $server->getEventListener()->onGet($key, $package);
         }
         $dataToSend = serialize($package);
-        $ioHandler->writeToSocket($connection, $dataToSend);
+        $server->getIOHandler()->writeToSocket($connection, $dataToSend);
 
         return true;
     }
 
     private function handleDelete(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
         $key = $data['key'];
-        $package = $bucket->get($key);
+        $package = $server->getBucket()->get($key);
         if ($package === false) {
             return false;
         }
-        if ($eventListener) {
-            $package = $eventListener->onDelete($key, $package);
+        if ($server->getEventListener()) {
+            $package = $server->getEventListener()->onDelete($key, $package);
         }
-        $success = $bucket->delete($key);
+        $success = $server->getBucket()->delete($key);
 
         return $success;
     }
 
     private function handleGetEntries(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
-        $entries = $bucket->getEntries();
+        $entries = $server->getBucket()->getEntries();
         $entriesFormatted = [];
         foreach ($entries as $key => $value) {
             $entriesFormatted[$key] = gzuncompress($value['content']);
         }
         $dataToSend = serialize($entriesFormatted);
-        $ioHandler->writeToSocket($connection, $dataToSend);
+        $server->getIOHandler()->writeToSocket($connection, $dataToSend);
 
         return true;
     }
 
     private function handleQuit(
+        $server,
         $data,
-        $bucket,
-        $ioHandler,
-        $connection,
-        $eventListener,
-        $maintainer,
-        $serverSocket
+        $connection
     ) {
-        $ioHandler->closeSocket($serverSocket);
-        $ioHandler->removeSocketFile();
-        $maintainer->backup($bucket);
+        $server->close();
     }
 }

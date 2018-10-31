@@ -69,28 +69,51 @@ class CacheServer implements CacheServerInterface
                 $dataString = $this->ioHandler->readFromSocket($connection);
                 $data = unserialize($dataString);
                 ($this->actionHandler)(
+                    $this,
                     $data,
-                    $this->bucket,
-                    $this->ioHandler,
-                    $connection,
-                    $this->cacheEventListener,
-                    $this->maintainer,
-                    $this->socket
+                    $connection
                 );
                 $this->ioHandler->closeSocket($connection);
                 unset($this->clients[$clientId]);
             }
         }
     }
-
-    public function beforeServiceStop()
+    
+    public function getBucket()
     {
-        $this->close();
-        $this->maintainer->backup($this->bucket);
+        return $this->bucket;
     }
-
+    
+    public function getIOHandler()
+    {
+        return $this->ioHandler;
+    }
+    
+    public function getCacheEventListener()
+    {
+        return $this->cacheEventListener;
+    }
+    
+    public function getMaintainer()
+    {
+        return $this->maintainer;
+    }
+    
+    public function getSocket()
+    {
+        return $this->socket;
+    }
+    
+    public function getEventListener()
+    {
+        return $this->cacheEventListener;
+    }
+    
     public function close()
     {
+        $this->maintainer->backup($this->bucket);
+        $this->running = false;
         $this->ioHandler->closeSocket($this->socket);
+        $this->ioHandler->removeSocket();
     }
 }

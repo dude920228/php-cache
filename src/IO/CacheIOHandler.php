@@ -106,7 +106,7 @@ class CacheIOHandler
         socket_close($socket);
     }
 
-    public function removeSocketFile()
+    public function removeSocket()
     {
         if ($this->socketType == self::SOCKET_TYPE_FILE) {
             unlink($this->location);

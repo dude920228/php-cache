@@ -2,11 +2,16 @@
 
 use PhpCache\CacheClient\CacheClient;
 use PhpCache\CacheClient\CacheClientFactory;
+use PhpCache\CacheEventListener\CacheEventListener;
+use PhpCache\CacheEventListener\CacheEventListenerFactory;
+use PhpCache\CacheEventListener\CacheEventListenerInterface;
 use PhpCache\CacheServer\ActionHandler;
 use PhpCache\CacheServer\CacheServer;
 use PhpCache\CacheServer\CacheServerFactory;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\IO\CacheIOHandlerFactory;
+use PhpCache\Logger\CacheDataLogger;
+use PhpCache\Logger\CacheDataLoggerFactory;
 use PhpCache\Storage\Bucket;
 use PhpCache\Storage\BucketFactory;
 use PhpCache\Storage\Maintainer;
@@ -22,10 +27,11 @@ return [
         'backupTime'        => 1800,
         'backupDir'         => __DIR__.'/.backup',
         'socketType'        => CacheIOHandler::SOCKET_TYPE_FILE,
+        'logFilePath'       => '/var/www/php-cache/temp/log/php-cache.log',
     ],
     'services' => [
         'aliases' => [
-
+            CacheEventListenerInterface::class => CacheEventListener::class
         ],
         'factories' => [
             CacheServer::class    => CacheServerFactory::class,
@@ -33,6 +39,8 @@ return [
             CacheClient::class    => CacheClientFactory::class,
             Maintainer::class     => MaintainerFactory::class,
             Bucket::class         => BucketFactory::class,
+            CacheEventListener::class => CacheEventListenerFactory::class,
+            CacheDataLogger::class => CacheDataLoggerFactory::class
         ],
         'invokables' => [
             ActionHandler::class => ActionHandler::class,
