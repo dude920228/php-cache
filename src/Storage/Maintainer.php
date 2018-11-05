@@ -78,7 +78,7 @@ class Maintainer
 
     private function createBackupDir(): void
     {
-        if (!file_exists($this->backupDir)) {
+        if (! file_exists($this->backupDir)) {
             mkdir($this->backupDir);
         }
     }
@@ -86,8 +86,10 @@ class Maintainer
     private function backupToFile(Bucket $bucket): void
     {
         foreach ($bucket->getEntries() as $key => $entry) {
-            file_put_contents($this->backupDir.'/'.$key.'.dat',
-                    serialize($entry));
+            file_put_contents(
+                $this->backupDir.'/'.$key.'.dat',
+                serialize($entry)
+            );
         }
     }
 }

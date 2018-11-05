@@ -20,7 +20,7 @@ class Bucket implements StorageInterface
 
     public function get(string $key): ?string
     {
-        if (!array_key_exists($key, $this->entries) && !$this->existsInBackup($key)) {
+        if (! array_key_exists($key, $this->entries) && ! $this->existsInBackup($key)) {
             return null;
         }
         if ($this->existsInBackup($key)) {
@@ -46,7 +46,7 @@ class Bucket implements StorageInterface
         $contents = '';
         $handle = fopen($this->backupDir.'/'.$key.'.dat', 'r+');
         if (is_resource($handle)) {
-            while (!feof($handle)) {
+            while (! feof($handle)) {
                 $contents .= fread($handle, 32);
             }
         }
@@ -59,7 +59,7 @@ class Bucket implements StorageInterface
         $compressed = gzcompress($entry, 9);
         $this->entries[$key]['content'] = $compressed;
         $this->entries[$key]['created_time'] = is_null($time) ? time() : $time;
-        if (!$compressed) {
+        if (! $compressed) {
             return false;
         }
 

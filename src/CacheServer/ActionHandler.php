@@ -16,7 +16,7 @@ class ActionHandler
     ): ?bool {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
-        if (!method_exists($this, $functionName)) {
+        if (! method_exists($this, $functionName)) {
             return false;
         }
 
@@ -48,7 +48,7 @@ class ActionHandler
     ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
-        if (!$package) {
+        if (! $package) {
             return false;
         }
         if ($server->getEventListener()) {
@@ -67,7 +67,7 @@ class ActionHandler
     ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
-        if (!$package) {
+        if (! $package) {
             return false;
         }
         if ($server->getEventListener()) {

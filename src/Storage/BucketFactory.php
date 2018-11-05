@@ -14,7 +14,7 @@ class BucketFactory
         $config = $container->getConfig();
         $backupDir = $config['backupDir'];
         $bucket = new Bucket($backupDir);
-        if (!file_exists($backupDir)) {
+        if (! file_exists($backupDir)) {
             return $bucket;
         }
 
@@ -24,12 +24,12 @@ class BucketFactory
     private function restoreFromBackup($bucket, $backupDir)
     {
         foreach (new \DirectoryIterator($backupDir) as $file) {
-            if (!$file->isDot() && $file->isFile()) {
+            if (! $file->isDot() && $file->isFile()) {
                 $keyParts = explode('.', $file->getFilename());
                 $key = $keyParts[0];
                 $handle = $file->openFile('r');
                 $contents = '';
-                while (!$handle->eof()) {
+                while (! $handle->eof()) {
                     $contents .= $handle->fread(128);
                 }
                 if ($contents != '') {
