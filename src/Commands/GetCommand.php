@@ -43,7 +43,7 @@ class GetCommand extends Command
         /* @var $client CacheClient */
         $client = $this->serviceManager->get(CacheClient::class);
         $table = (new Table($output))->setHeaders(['KEY', 'VALUE']);
-        if (! is_null($key)) {
+        if (!is_null($key)) {
             $value = $client->get($key);
             if ($value === false) {
                 $output->writeln('<comment>No entry found for key: '.$key.'</comment>');

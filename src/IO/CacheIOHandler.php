@@ -43,7 +43,7 @@ class CacheIOHandler
         $socket = socket_create($socketType, SOCK_STREAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
         $bindResult = socket_bind($socket, $this->location, $this->serverPort);
-        if (! $bindResult) {
+        if (!$bindResult) {
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
 
@@ -73,7 +73,7 @@ class CacheIOHandler
             $this->location,
             $this->serverPort
         );
-        if (! $connectionResult) {
+        if (!$connectionResult) {
             $errorCode = socket_last_error($socket);
             $errorMsg = socket_strerror($errorCode);
 
