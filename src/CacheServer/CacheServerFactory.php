@@ -22,7 +22,7 @@ class CacheServerFactory
         $bucket = $container->get(Bucket::class);
         $actionHandler = $container->get(ActionHandler::class);
         $maintainer = $container->get(Maintainer::class);
-        $eventListener = false;
+        $eventListener = null;
         if ($container->has(CacheEventListenerInterface::class)) {
             $eventListener = $container->get(CacheEventListenerInterface::class);
         }

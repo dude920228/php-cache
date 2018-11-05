@@ -18,10 +18,10 @@ class Bucket implements StorageInterface
         $this->entries = [];
     }
 
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
         if (!array_key_exists($key, $this->entries) && !$this->existsInBackup($key)) {
-            return false;
+            return null;
         }
         if ($this->existsInBackup($key)) {
             $entry = unserialize($this->getFromBackup($key));

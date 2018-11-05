@@ -104,7 +104,7 @@ class CacheServer implements CacheServerInterface
         return $this->socket;
     }
 
-    public function getEventListener(): CacheEventListenerInterface
+    public function getEventListener(): ?CacheEventListenerInterface
     {
         return $this->cacheEventListener;
     }

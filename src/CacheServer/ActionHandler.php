@@ -48,7 +48,7 @@ class ActionHandler
     ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
-        if ($package === false) {
+        if (!$package) {
             return false;
         }
         if ($server->getEventListener()) {
@@ -67,7 +67,7 @@ class ActionHandler
     ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
-        if ($package === false) {
+        if (!$package) {
             return false;
         }
         if ($server->getEventListener()) {
