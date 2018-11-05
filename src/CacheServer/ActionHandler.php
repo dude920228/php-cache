@@ -31,7 +31,7 @@ class ActionHandler
         CacheServer $server,
         array $data,
         $connection
-    ):bool  {
+    ):bool {
         $package = $data['message'];
         if ($server->getEventListener()) {
             $package = $server->getEventListener()->onSet($data['key'], $package);

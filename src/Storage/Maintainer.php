@@ -53,7 +53,7 @@ class Maintainer
 
         return $size;
     }
-    
+
     public function backup(Bucket $bucket): void
     {
         $this->createBackupDir();
@@ -82,7 +82,7 @@ class Maintainer
             mkdir($this->backupDir);
         }
     }
-    
+
     private function backupToFile(Bucket $bucket): void
     {
         foreach ($bucket->getEntries() as $key => $entry) {
