@@ -19,7 +19,7 @@ class CacheDataLogger
         if (count($pathParts) > 1) {
             unset($pathParts[count($pathParts) - 1]);
             $this->logFileDir = implode('/', $pathParts);
-            if (! file_exists($this->logFileDir)) {
+            if (!file_exists($this->logFileDir)) {
                 mkdir($this->logFileDir);
             }
         }

@@ -78,7 +78,7 @@ class Maintainer
 
     private function createBackupDir(): void
     {
-        if (! file_exists($this->backupDir)) {
+        if (!file_exists($this->backupDir)) {
             mkdir($this->backupDir);
         }
     }
