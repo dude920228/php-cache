@@ -4,7 +4,7 @@ Cache implementation for php
 
 # Usage:
 #### Prequests:
-- PHP 5/7
+- PHP 7.2
 - composer
 #### Installing via composer:
 ```
