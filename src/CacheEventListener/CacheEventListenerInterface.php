@@ -7,9 +7,9 @@ namespace PhpCache\CacheEventListener;
  */
 interface CacheEventListenerInterface
 {
-    public function onSet($key, $entry);
+    public function onSet(string $key, $entry);
 
-    public function onGet($key, $entry);
+    public function onGet(string $key, $entry);
 
-    public function onDelete($key, $entry);
+    public function onDelete(string $key, $entry);
 }

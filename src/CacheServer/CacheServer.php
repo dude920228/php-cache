@@ -2,6 +2,7 @@
 
 namespace PhpCache\CacheServer;
 
+use PhpCache\CacheEventListener\CacheEventListenerInterface;
 use PhpCache\IO\CacheIOHandler;
 use PhpCache\Storage\Bucket;
 use PhpCache\Storage\Maintainer;
@@ -41,7 +42,11 @@ class CacheServer implements CacheServerInterface
     private $clients;
 
     public function __construct(
-        $ioHandler, $bucket, $actionHandler, $maintainer, $cacheEventListener = false
+        CacheIOHandler $ioHandler,
+        Bucket $bucket,
+        ActionHandler $actionHandler,
+        Maintainer $maintainer,
+        CacheEventListenerInterface $cacheEventListener = null
     ) {
         $this->running = true;
         $this->ioHandler = $ioHandler;
@@ -52,7 +57,7 @@ class CacheServer implements CacheServerInterface
         $this->cacheEventListener = $cacheEventListener;
     }
 
-    public function run()
+    public function run(): void
     {
         $this->socket = $this->ioHandler->createServerSocket();
         while ($this->running) {
@@ -79,22 +84,17 @@ class CacheServer implements CacheServerInterface
         }
     }
 
-    public function getBucket()
+    public function getBucket(): Bucket
     {
         return $this->bucket;
     }
 
-    public function getIOHandler()
+    public function getIOHandler(): CacheIOHandler
     {
         return $this->ioHandler;
     }
 
-    public function getCacheEventListener()
-    {
-        return $this->cacheEventListener;
-    }
-
-    public function getMaintainer()
+    public function getMaintainer(): Maintainer
     {
         return $this->maintainer;
     }
@@ -104,12 +104,12 @@ class CacheServer implements CacheServerInterface
         return $this->socket;
     }
 
-    public function getEventListener()
+    public function getEventListener(): CacheEventListenerInterface
     {
         return $this->cacheEventListener;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->maintainer->backup($this->bucket);
         $this->running = false;

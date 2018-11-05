@@ -7,7 +7,7 @@ namespace PhpCache\Storage;
  */
 interface StorageInterface
 {
-    public function store($key, $message);
+    public function store(string $key, string $message);
 
-    public function get($key);
+    public function get(string $key);
 }

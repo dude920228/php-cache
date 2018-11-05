@@ -20,12 +20,12 @@ class ConfigAggregator
         $this->mergedConfig = [];
     }
 
-    public function addConfig($config)
+    public function addConfig(array $config): void
     {
         $this->configs[] = $config;
     }
 
-    public function getMergedConfig()
+    public function getMergedConfig(): array
     {
         foreach ($this->configs as $config) {
             $this->mergedConfig = array_merge_recursive($this->mergedConfig, $config);

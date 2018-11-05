@@ -12,13 +12,13 @@ class Bucket implements StorageInterface
     private $entries;
     private $backupDir;
 
-    public function __construct($backupDir)
+    public function __construct(string $backupDir)
     {
         $this->backupDir = $backupDir;
         $this->entries = [];
     }
 
-    public function get($key)
+    public function get(string $key): string
     {
         if (!array_key_exists($key, $this->entries) && !$this->existsInBackup($key)) {
             return false;
@@ -32,7 +32,7 @@ class Bucket implements StorageInterface
         return gzuncompress($this->entries[$key]['content']);
     }
 
-    private function existsInBackup($key)
+    private function existsInBackup($key): bool
     {
         if (file_exists($this->backupDir.'/'.$key.'.dat')) {
             return true;
@@ -41,7 +41,7 @@ class Bucket implements StorageInterface
         return false;
     }
 
-    private function getFromBackup($key)
+    private function getFromBackup($key): string
     {
         $contents = '';
         $handle = fopen($this->backupDir.'/'.$key.'.dat', 'r+');
@@ -54,7 +54,7 @@ class Bucket implements StorageInterface
         return $contents;
     }
 
-    public function store($key, $entry, $time = null)
+    public function store(string $key, string $entry, $time = null): bool
     {
         $compressed = gzcompress($entry, 9);
         $this->entries[$key]['content'] = $compressed;
@@ -66,12 +66,12 @@ class Bucket implements StorageInterface
         return true;
     }
 
-    public function getEntries()
+    public function getEntries(): array
     {
         return $this->entries;
     }
 
-    public function delete($key)
+    public function delete($key): bool
     {
         if (array_key_exists($key, $this->entries)) {
             unset($this->entries[$key]);
@@ -80,10 +80,5 @@ class Bucket implements StorageInterface
         }
 
         return false;
-    }
-
-    public function getKeys()
-    {
-        return array_keys($this->entries);
     }
 }

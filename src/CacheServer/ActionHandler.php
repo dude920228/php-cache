@@ -10,10 +10,10 @@ namespace PhpCache\CacheServer;
 class ActionHandler
 {
     public function __invoke(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ): ?bool {
         $action = $data['action'];
         $functionName = 'handle'.ucfirst($action);
         if (!method_exists($this, $functionName)) {
@@ -28,10 +28,10 @@ class ActionHandler
     }
 
     private function handleSet(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ):bool  {
         $package = $data['message'];
         if ($server->getEventListener()) {
             $package = $server->getEventListener()->onSet($data['key'], $package);
@@ -42,10 +42,10 @@ class ActionHandler
     }
 
     private function handleGet(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
         if ($package === false) {
@@ -61,10 +61,10 @@ class ActionHandler
     }
 
     private function handleDelete(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ): bool {
         $key = $data['key'];
         $package = $server->getBucket()->get($key);
         if ($package === false) {
@@ -79,10 +79,10 @@ class ActionHandler
     }
 
     private function handleGetEntries(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ): bool {
         $entries = $server->getBucket()->getEntries();
         $entriesFormatted = [];
         foreach ($entries as $key => $value) {
@@ -95,10 +95,10 @@ class ActionHandler
     }
 
     private function handleQuit(
-        $server,
-        $data,
+        CacheServer $server,
+        array $data,
         $connection
-    ) {
+    ): void {
         $server->close();
     }
 }

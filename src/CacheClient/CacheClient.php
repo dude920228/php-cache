@@ -16,12 +16,12 @@ class CacheClient implements CacheClientInterface
      */
     private $ioHandler;
 
-    public function __construct($ioHandler)
+    public function __construct(CacheIOHandler $ioHandler)
     {
         $this->ioHandler = $ioHandler;
     }
 
-    public function set($key, $package)
+    public function set(string $key, $package): void
     {
         $socket = $this->ioHandler->createClientSocket();
         $data = ['action' => 'set', 'key' => $key, 'message' => $package];
@@ -30,7 +30,7 @@ class CacheClient implements CacheClientInterface
         $this->ioHandler->closeSocket($socket);
     }
 
-    public function get($key)
+    public function get(string $key)
     {
         $data = ['action' => 'get', 'key' => $key];
         $socket = $this->ioHandler->createClientSocket();
@@ -42,7 +42,7 @@ class CacheClient implements CacheClientInterface
         return unserialize($recv);
     }
 
-    public function delete($key)
+    public function delete(string $key): void
     {
         $data = ['action' => 'delete', 'key' => $key];
         $socket = $this->ioHandler->createClientSocket();
@@ -51,7 +51,7 @@ class CacheClient implements CacheClientInterface
         $this->ioHandler->closeSocket($socket);
     }
 
-    public function quitServer()
+    public function quitServer(): void
     {
         $data = ['action' => 'quit'];
         $socket = $this->ioHandler->createClientSocket();
@@ -59,7 +59,7 @@ class CacheClient implements CacheClientInterface
         $this->ioHandler->writeToSocket($socket, $dataString);
     }
 
-    public function getEntries()
+    public function getEntries(): array
     {
         $data = ['action' => 'getEntries'];
         $socket = $this->ioHandler->createClientSocket();

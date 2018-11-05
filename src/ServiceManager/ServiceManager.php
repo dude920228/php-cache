@@ -17,13 +17,13 @@ class ServiceManager implements ContainerInterface
     private $factories;
     private $invokables;
 
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->config = $config;
         $this->configure();
     }
 
-    private function configure()
+    private function configure(): void
     {
         if (isset($this->config['services']['aliases'])) {
             $this->aliases = $this->config['services']['aliases'];
@@ -64,7 +64,7 @@ class ServiceManager implements ContainerInterface
         );
     }
 
-    private function getServiceType($id)
+    private function getServiceType(string $id): string
     {
         if (array_key_exists($id, $this->aliases)) {
             return 'alias';
@@ -73,7 +73,7 @@ class ServiceManager implements ContainerInterface
         return array_key_exists($id, $this->factories) ? 'factory' : 'invokable';
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config['config'];
     }

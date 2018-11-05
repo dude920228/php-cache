@@ -7,9 +7,9 @@ namespace PhpCache\CacheClient;
  */
 interface CacheClientInterface
 {
-    public function set($key, $message);
+    public function set(string $key, $message);
 
-    public function get($key);
+    public function get(string $key);
 
-    public function delete($key);
+    public function delete(string $key);
 }

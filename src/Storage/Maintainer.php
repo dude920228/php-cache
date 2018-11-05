@@ -2,6 +2,8 @@
 
 namespace PhpCache\Storage;
 
+use function strlen;
+
 /**
  * Description of Maintainer.
  *
@@ -15,8 +17,12 @@ class Maintainer
     private $backupTime;
     private $memoryLimit;
 
-    public function __construct($ttl, $backupDir, $backupTime, $memoryLimit)
-    {
+    public function __construct(
+        int $ttl,
+        string $backupDir,
+        int $backupTime,
+        int $memoryLimit
+    ) {
         $this->ttl = $ttl;
         $this->lastBackupRun = time();
         $this->backupDir = $backupDir;
@@ -27,7 +33,7 @@ class Maintainer
     /**
      * @param Bucket $bucket
      */
-    public function maintainBucket($bucket)
+    public function maintainBucket(Bucket $bucket): void
     {
         $entries = $bucket->getEntries();
         foreach ($entries as $key => $entry) {
@@ -38,7 +44,7 @@ class Maintainer
         }
     }
 
-    private function checkMemory($bucket)
+    private function checkMemory(Bucket $bucket): int
     {
         $size = 0;
         foreach ($bucket->getEntries() as $entry) {
@@ -47,17 +53,14 @@ class Maintainer
 
         return $size;
     }
-
-    /**
-     * @param Bucket $bucket
-     */
-    public function backup($bucket)
+    
+    public function backup(Bucket $bucket): void
     {
         $this->createBackupDir();
         $this->backupToFile($bucket);
     }
 
-    public function checkBackup($time, $bucket)
+    public function checkBackup(int $time, Bucket $bucket): void
     {
         if ($time - $this->lastBackupRun >= $this->backupTime ||
             $this->checkMemory($bucket) >= $this->memoryLimit) {
@@ -66,25 +69,21 @@ class Maintainer
         }
     }
 
-    private function free($bucket)
+    private function free(Bucket $bucket): void
     {
-        /* @var $bucket Bucket */
         foreach ($bucket->getEntries() as $key => $entry) {
             $bucket->delete($key);
         }
     }
 
-    private function createBackupDir()
+    private function createBackupDir(): void
     {
         if (!file_exists($this->backupDir)) {
             mkdir($this->backupDir);
         }
     }
-
-    /**
-     * @param Bucket $bucket
-     */
-    private function backupToFile($bucket)
+    
+    private function backupToFile(Bucket $bucket): void
     {
         foreach ($bucket->getEntries() as $key => $entry) {
             file_put_contents($this->backupDir.'/'.$key.'.dat',
