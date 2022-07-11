@@ -39,6 +39,7 @@ class CacheIOHandler
         $socketType = AF_INET;
         if ($this->socketType == self::SOCKET_TYPE_FILE) {
             $socketType = AF_UNIX;
+            $this->createSocketDirectory();
         }
         $socket = socket_create($socketType, SOCK_STREAM, 0);
         socket_set_option($socket, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -126,5 +127,12 @@ class CacheIOHandler
     public function getBufferLength()
     {
         return $this->bufferLength;
+    }
+
+    private function createSocketDirectory(): void
+    {
+        $pathParts = explode('/', $this->location);
+        unset($pathParts[count($pathParts)-1]);
+        mkdir(implode('/', $pathParts));
     }
 }
